@@ -1,4 +1,12 @@
-# Tu m'as scié sur patte
+# Tu m'as scié sur pattes
+
+Accroché de toutes mes forces au gouvernail, la mèche pendante, mes yeux plongent dans les profondeurs abyssales de la Seine. Soudain, la grâce me frappe en pleine poitrine. Avec une lucidité que je croyais partie à jamais, je mets des mots sur mon état d'âme : je suis littéralement scié sur pattes.
+
+# Pour lancer le programme
+
+Lancer le main.py
+
+`python3 main.py`
 
 # Calcul IFT
 
