@@ -4,6 +4,8 @@ Accroché de toutes mes forces au gouvernail, la mèche pendante, mes yeux plong
 
 J'vais te casser tes p'tites pattes arrière
 
+Luc, l'enfant flûte.
+
 # Pour lancer le programme
 
 Lancer le main.py
