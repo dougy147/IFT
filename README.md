@@ -6,6 +6,8 @@ J'vais te casser tes p'tites pattes arrière
 
 Luc, l'enfant flûte.
 
+Putain ntm c'est lourd l'environnement virtuel (216Mo).
+
 # Pour lancer le programme
 
 Lancer le main.py
