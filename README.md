@@ -21,4 +21,4 @@ https://www.data.gouv.fr/fr/datasets/r/98f7cac6-6b29-4859-8739-51b825196959
 
 ## Pré-requis
 
-`pip install babel fpdf fpdf2 openpyxl pandas tkcalendar`
+`pip install babel fpdf fpdf2 openpyxl pandas tkcalendar requests`
