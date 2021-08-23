@@ -8,6 +8,8 @@ Luc, l'enfant flûte.
 
 Putain ntm c'est lourd l'environnement virtuel (216Mo).
 
+J'vais jouir et pisser sur ton environnement virtuel.
+
 # Pour lancer le programme
 
 Lancer le main.py
