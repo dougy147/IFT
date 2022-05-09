@@ -27,10 +27,10 @@ import numpy
 #
 #"""
 #    - Décommenter les lignes ci-dessus (import pyi_splash ; pyi_splash.close() )
-#    - Décommenter la ligne '#fenetre.iconbitmap('./config/icone.ico')' (pour avoir l'icone)
+#    - Décommenter la ligne '#fenetre.iconbitmap('icone.ico')' (pour avoir l'icone)
 #    - Lancer "cmd" en mode Administrateur
 #    - Se placer dans le dossier qui contient 'main.py' (en tapant par exemple : cd C:\Users\luc\Desktop\v25 )
-#    - Lancer la commande suivante : pyinstaller main.py --onefile -w --splash ./config/splashscreen.png
+#    - Lancer la commande suivante : pyinstaller main.py --onefile -w --splash splashscreen.png
 #    - Le fichier .exe se trouve dans le dossier 'dist'.
 #    - Le copier dans le dossier principal pour pouvoir lancer le programme
 #    - On peut supprimer 'main.py', 'recherche_produit.py' et 'update.py'
@@ -40,14 +40,14 @@ fenetre = tkinter.Tk ()                         # création de la fenêtre princ
 
 # test theme
 style = ttk.Style(fenetre)
-fenetre.tk.call("source", "./config/azure-theme/azure.tcl")
+fenetre.tk.call("source", "azure-theme/azure.tcl")
 fenetre.tk.call("set_theme", "light")
 # https://github.com/rdbende/Azure-ttk-theme
 
 fenetre.geometry("750x600")                     # taille de fenêtre
 fenetre.title("IFT - v0.2 - Jean-Pierre & Luc Drouillet (2022)")                 # titre
 fenetre.resizable(width=True, height=True)    # fenetre redimensionnable ?
-# fenetre.iconbitmap('./config/icone.ico')
+# fenetre.iconbitmap('icone.ico')
 
 # Année en cours
 annee_en_cours = int(datetime.datetime.now().date().strftime("%Y"))
@@ -140,7 +140,7 @@ resume_gestion_resistances= IntVar(value=1)
 resume_traitements= IntVar(value=1)
 
 # Récupérer les parcelles et leur superficie stockées dans le fichier 'liste_parcelles.xlsx'
-fichier_parcelles = pd.read_excel('./config/liste_parcelles.xlsx')
+fichier_parcelles = pd.read_excel('liste_parcelles.xlsx')
 if len(fichier_parcelles) > 0 :
     for ligne in range(len(fichier_parcelles)):
         recuperer_nom_parcelle=fichier_parcelles['nom_parcelle'].iloc[ligne]
@@ -308,11 +308,11 @@ def ajouter_parcelle():
     surface_traitee.delete(0,END)
     surface_traitee.insert(0,dictionnaire_parcelles[parcelle_choisie.get()])
     # Manipuler le fichier excel
-    fichier_parcelles_openpyxl = openpyxl.reader.excel.load_workbook('./config/liste_parcelles.xlsx')
+    fichier_parcelles_openpyxl = openpyxl.reader.excel.load_workbook('liste_parcelles.xlsx')
     sheet_en_cours = fichier_parcelles_openpyxl['liste_parcelles']
     sheet_en_cours.append([nom_nouvelle_parcelle, taille_nouvelle_parcelle, taille_confusion])
-    fichier_parcelles_openpyxl.save('./config/liste_parcelles.xlsx')
-    fichier_parcelles = pd.read_excel('./config/liste_parcelles.xlsx')
+    fichier_parcelles_openpyxl.save('liste_parcelles.xlsx')
+    fichier_parcelles = pd.read_excel('liste_parcelles.xlsx')
     messagebox.showinfo("Information","La parcelle a bien été ajoutée.")
     infos_IFT_toute_la_base_de_donnees()
     recapitulatif_total()
@@ -364,17 +364,17 @@ def supprimer_parcelle():
             IFT_herbicides_postlevee_recap.set("")
             IFT_herbicides_recap.set("")
         # Manipuler le fichier excel "liste parcelles"
-        fichier_parcelles = pd.read_excel('./config/liste_parcelles.xlsx')
+        fichier_parcelles = pd.read_excel('liste_parcelles.xlsx')
         index_a_supprimer = fichier_parcelles[ fichier_parcelles['nom_parcelle'] == parcelle_suppression ].index
         fichier_parcelles = fichier_parcelles.drop(index_a_supprimer)
-        fichier_parcelles.to_excel('./config/liste_parcelles.xlsx', sheet_name='liste_parcelles', index=False)
-        fichier_parcelles = pd.read_excel('./config/liste_parcelles.xlsx')
+        fichier_parcelles.to_excel('liste_parcelles.xlsx', sheet_name='liste_parcelles', index=False)
+        fichier_parcelles = pd.read_excel('liste_parcelles.xlsx')
         # Manipuler le fichier excel "IFT"
-        fichier_IFT = pd.read_excel('./config/IFT.xlsx')
+        fichier_IFT = pd.read_excel('IFT.xlsx')
         index_a_supprimer = fichier_IFT[ fichier_IFT['nom_parcelle'] == parcelle_suppression ].index
         fichier_IFT = fichier_IFT.drop(index_a_supprimer)
-        fichier_IFT.to_excel('./config/IFT.xlsx', sheet_name='IFT', index=False)
-        fichier_IFT = pd.read_excel('./config/IFT.xlsx')
+        fichier_IFT.to_excel('IFT.xlsx', sheet_name='IFT', index=False)
+        fichier_IFT = pd.read_excel('IFT.xlsx')
         infos_IFT_par_parcelle()
         infos_IFT_toute_la_base_de_donnees()
         recapitulatif_total()
@@ -407,13 +407,13 @@ def sauvegarde():
         date_traitement=indiquer_date.get_date()
         date_traitement=date_traitement.strftime('%d/%m/%Y')
         # Ajouter à l'excel 'IFT.xlsx'
-        fichier_IFT_openpyxl = openpyxl.reader.excel.load_workbook('./config/IFT.xlsx')
+        fichier_IFT_openpyxl = openpyxl.reader.excel.load_workbook('IFT.xlsx')
         sheet_en_cours = fichier_IFT_openpyxl['IFT']
-        fichier_IFT = pd.read_excel('./config/IFT.xlsx')
+        fichier_IFT = pd.read_excel('IFT.xlsx')
         si_herbicide=produit_herbicide.get()
         sheet_en_cours.append([date_du_jour, date_traitement,nom_produit, numero_amm, substances_actives, utilisation ,fonction_produit,si_herbicide,nom_parcelle,dose_mise,dose_reglementaire,unite,superficie_traitee,superficie_totale_parcelle,IFT_recupere,biocontrole,passage_numero])
-        fichier_IFT_openpyxl.save('./config/IFT.xlsx')
-        fichier_IFT = pd.read_excel('./config/IFT.xlsx')
+        fichier_IFT_openpyxl.save('IFT.xlsx')
+        fichier_IFT = pd.read_excel('IFT.xlsx')
         messagebox.showinfo("Information","Le traitement a été enregistré.")
         infos_IFT_par_parcelle()
         infos_IFT_toute_la_base_de_donnees()
@@ -445,7 +445,7 @@ def infos_IFT_par_parcelle():
     IFT_total=0
     IFT_en_cours=0
     parcelle_a_etudier=parcelle_a_supprimer.get()
-    fichier_IFT = pd.read_excel('./config/IFT.xlsx') # TODO
+    fichier_IFT = pd.read_excel('IFT.xlsx') # TODO
     lignes_contenant_parcelle=fichier_IFT[fichier_IFT['nom_parcelle'].str.contains(parcelle_a_etudier, na=False)]
     for ligne in range(len(lignes_contenant_parcelle)):
         IFT_en_cours=lignes_contenant_parcelle['IFT'].iloc[ligne]
@@ -456,7 +456,7 @@ def infos_IFT_toute_la_base_de_donnees():
     # IFT total sur l'ensemble des parcelles
     # formule : (somme (IFT parcelle * taille parcelle)) / (taille exploitation)  <- regarder IFT biocontrole vs classqiue
     IFT_BDD=0
-    fichier_IFT = pd.read_excel('./config/IFT.xlsx')
+    fichier_IFT = pd.read_excel('IFT.xlsx')
     if len(fichier_IFT) == 0 :
         IFT_base_de_donnees.set(0)
     else :
@@ -493,7 +493,7 @@ def nombre_passages_restants():
         return(il_reste_des_passages)
     else :
         parcelle_a_etudier=parcelle_choisie.get()
-        fichier_IFT = pd.read_excel('./config/IFT.xlsx')
+        fichier_IFT = pd.read_excel('IFT.xlsx')
         lignes_contenant_parcelle=fichier_IFT[fichier_IFT['nom_parcelle'].str.contains(parcelle_a_etudier, na=False)]
         lignes_contenant_parcelle=lignes_contenant_parcelle[lignes_contenant_parcelle['nom_produit'].str.contains(nom_produit_choisi, na=False)]
         for ligne in range(len(lignes_contenant_parcelle)):
@@ -514,7 +514,7 @@ def nombre_passages_restants():
             return(il_reste_des_passages)
 
 def mettre_a_jour_bdd():
-    chemin_nouvelle_base=str(os.getcwd())+str("/config/bdd_phyto.csv")
+    chemin_nouvelle_base=str(os.getcwd())+str("/bdd_phyto.csv")
     infos=update.mettre_a_jour()
     if infos == "Votre base de données de produits est déjà à jour." :
         messagebox.showinfo("Information","Votre base de données de produits est déjà la plus récente.")
@@ -677,7 +677,7 @@ def update_label_et_superficie():
 def lire_traitements(): # pour onglet Traitements
     tree.delete(*tree.get_children())
     # Add new data in Treeview widget
-    traitements = pd.read_excel('./config/IFT.xlsx')
+    traitements = pd.read_excel('IFT.xlsx')
     #traitements = traitements[['date_traitement','nom_produit', '']]
     traitements = traitements.drop(['date','numero_AMM','substances_actives','si_herbicide','passage'], axis=1)
     tree["column"] = list(traitements.columns)
@@ -702,10 +702,10 @@ def supprimer_le_traitement(): # Pour onglet Traitements
         ligne_en_cours = tree.focus()
         # obtenir l'index de la ligne en cours (pour la supprimer de 'IFT.xlsx'
         index_de_la_ligne = tree.index(ligne_en_cours)
-        IFT_openpyxl = openpyxl.reader.excel.load_workbook('./config/IFT.xlsx')
+        IFT_openpyxl = openpyxl.reader.excel.load_workbook('IFT.xlsx')
         sheet_en_cours = IFT_openpyxl['IFT']
         sheet_en_cours.delete_rows(index_de_la_ligne+2, 1)
-        IFT_openpyxl.save('./config/IFT.xlsx')
+        IFT_openpyxl.save('IFT.xlsx')
         tree.delete(tree.selection()[0])
         infos_IFT_toute_la_base_de_donnees()
         recapitulatif_total()

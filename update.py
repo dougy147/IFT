@@ -6,7 +6,7 @@ from urllib.request import urlopen
 from os.path import basename
 
 chemin_actuel=os.getcwd() #dossier de travail en cours pour le script
-chemin_mise_a_jour=str(chemin_actuel)+str("./config/mise_a_jour_bdd")
+chemin_mise_a_jour=str(chemin_actuel)+str("/mise_a_jour_bdd")
 
 
 def mettre_a_jour():
@@ -16,7 +16,7 @@ def mettre_a_jour():
     # Obtenir le nom du fichier et vérifier s'il correspond avec celui stocké dans 'mise_a_jour_bdd/info'
     nom_du_fichier = basename(urlopen(url).url)
     # Lire le contenu de 'info'
-    fichier_infos = open("./config/mise_a_jour_bdd/infos","r")
+    fichier_infos = open("mise_a_jour_bdd/infos","r")
     ancienne_version = fichier_infos.read()
     print(nom_du_fichier, ancienne_version)
     fichier_infos.close()
@@ -27,13 +27,13 @@ def mettre_a_jour():
         return(infos_mise_a_jour)
 
     # Mettre le nom de la nouvelle version dans 'infos'
-    remplacer_infos = open("./config/mise_a_jour_bdd/infos","w+")
+    remplacer_infos = open("mise_a_jour_bdd/infos","w+")
     remplacer_infos.write(nom_du_fichier)
     remplacer_infos.close()
 
     # Télécharger le fichier avec la date (pour pouvoir comparer à la date de la BDD actuelle)
     requete = requests.get(url, allow_redirects=True)
-    open('./config/mise_a_jour_bdd/'+str(nom_du_fichier), 'wb').write(requete.content)
+    open('mise_a_jour_bdd/'+str(nom_du_fichier), 'wb').write(requete.content)
 
     # Dézipper le dossier :
     os.chdir(chemin_mise_a_jour)
@@ -96,7 +96,7 @@ def mettre_a_jour():
 
 
     # Remplace l'ancienne BDD
-    chemin_enregistrement = str(chemin_actuel)+str("./config/bdd_phyto.csv")
+    chemin_enregistrement = str(chemin_actuel)+str("/bdd_phyto.csv")
     # Changer les en-tête ?
     nouvelle_bdd.to_csv(chemin_enregistrement, sep=';', index = False)
     infos_mise_a_jour="La base a bien été mise à jour."
