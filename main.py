@@ -10,6 +10,7 @@ import calendar
 from babel.dates import format_date, parse_date, get_day_names, get_month_names
 from babel.numbers import *
 from tkcalendar import DateEntry
+import datetime
 from datetime import date
 import time
 import requests
@@ -39,6 +40,9 @@ fenetre.geometry("800x460")                     # taille de fenêtre
 fenetre.title("Calcul IFT - v0.1")                 # titre
 fenetre.resizable(width=True, height=True)    # fenetre redimensionnable ?
 # fenetre.iconbitmap('icone.ico')
+
+# Année en cours
+annee_en_cours = int(datetime.datetime.now().date().strftime("%Y"))
 
 # Onglets
 onglets = ttk.Notebook(fenetre,width=800,height=460)   # Création du système d'onglets
@@ -810,7 +814,7 @@ zone_texte_passages_restants.grid(row=11,column=1)
 # Demander d'indiquer une date pour le traitement (si rien n'est mis, prendre date du jour)
 zone_texte_indiquer_une_date=tkinter.Label(onglet1, text="Indiquez la date de ce traitement : ")
 zone_texte_indiquer_une_date.grid(row=12,column=0)
-indiquer_date = DateEntry(onglet1, values="Text", year=2021, date_pattern="dd/mm/yyyy", locale="fr_FR")
+indiquer_date = DateEntry(onglet1, values="Text", year=annee_en_cours, date_pattern="dd/mm/yyyy", locale="fr_FR")
 #indiquer_date = DateEntry(onglet1, values="Text", year=2021, state="readonly", date_pattern="dd/mm/yyyy",textvariable=date_traitement)
 indiquer_date.grid(row=12, column=1, padx=20, pady=5, sticky=W)
 
@@ -822,8 +826,8 @@ sauvegarde.grid(row=13,column=1)
 #quitter.grid(row=13,column=2)
 
 # Période date fin (OBLIGE de la mettre ici sinon marche pas... faire avec des classes)
-indiquer_date_fin = DateEntry(onglet4, values="Text", year=2021, date_pattern="dd/mm/yyyy", locale="fr_FR")
-indiquer_date_debut = DateEntry(onglet4, values="Text", year=2021, date_pattern="dd/mm/yyyy", locale="fr_FR")
+indiquer_date_fin = DateEntry(onglet4, values="Text", year=annee_en_cours, date_pattern="dd/mm/yyyy", locale="fr_FR")
+indiquer_date_debut = DateEntry(onglet4, values="Text", year=annee_en_cours-1, date_pattern="dd/mm/yyyy", locale="fr_FR")
 indiquer_date_debut.grid(row=1, column=1, padx=20, pady=5, sticky=W)
 indiquer_date_fin.grid(row=1, column=2, padx=20, pady=5, sticky=W)
 
