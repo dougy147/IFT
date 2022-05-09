@@ -4,12 +4,6 @@ Accroché de toutes mes forces au gouvernail, la mèche pendante, mes yeux plong
 
 J'vais te casser tes p'tites pattes arrière
 
-Luc, l'enfant flûte.
-
-Putain ntm c'est lourd l'environnement virtuel (216Mo).
-
-J'vais jouir et pisser sur ton environnement virtuel.
-
 # Pour lancer le programme
 
 Lancer le main.py
@@ -25,4 +19,4 @@ https://www.data.gouv.fr/fr/datasets/r/98f7cac6-6b29-4859-8739-51b825196959
 
 ## Pré-requis
 
-`pip install babel fpdf fpdf2 openpyxl pandas tkcalendar requests`
+`pip install babel fpdf fpdf2 openpyxl pandas tkcalendar`
