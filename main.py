@@ -1,4 +1,4 @@
-﻿import tkinter         # import de tkinter
+﻿import tkinter # import de tkinter
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -10,6 +10,7 @@ import calendar
 from babel.dates import format_date, parse_date, get_day_names, get_month_names
 from babel.numbers import *
 from tkcalendar import DateEntry
+from tkcalendar import Calendar
 import datetime
 from datetime import date
 import time
@@ -26,26 +27,33 @@ import numpy
 #
 #"""
 #    - Décommenter les lignes ci-dessus (import pyi_splash ; pyi_splash.close() )
-#    - Décommenter la ligne '#fenetre.iconbitmap('icone.ico')' (pour avoir l'icone)
+#    - Décommenter la ligne '#fenetre.iconbitmap('./config/icone.ico')' (pour avoir l'icone)
 #    - Lancer "cmd" en mode Administrateur
 #    - Se placer dans le dossier qui contient 'main.py' (en tapant par exemple : cd C:\Users\luc\Desktop\v25 )
-#    - Lancer la commande suivante : pyinstaller main.py --onefile -w --splash splashscreen.png
+#    - Lancer la commande suivante : pyinstaller main.py --onefile -w --splash ./config/splashscreen.png
 #    - Le fichier .exe se trouve dans le dossier 'dist'.
 #    - Le copier dans le dossier principal pour pouvoir lancer le programme
 #    - On peut supprimer 'main.py', 'recherche_produit.py' et 'update.py'
 #"""
 
 fenetre = tkinter.Tk ()                         # création de la fenêtre principale
-fenetre.geometry("800x460")                     # taille de fenêtre
-fenetre.title("Calcul IFT - v0.1")                 # titre
+
+# test theme
+style = ttk.Style(fenetre)
+fenetre.tk.call("source", "azure-theme/azure.tcl")
+fenetre.tk.call("set_theme", "light")
+# https://github.com/rdbende/Azure-ttk-theme
+
+fenetre.geometry("750x600")                     # taille de fenêtre
+fenetre.title("IFT - v0.2 - Jean-Pierre & Luc Drouillet (2022)")                 # titre
 fenetre.resizable(width=True, height=True)    # fenetre redimensionnable ?
-# fenetre.iconbitmap('icone.ico')
+# fenetre.iconbitmap('./config/icone.ico')
 
 # Année en cours
 annee_en_cours = int(datetime.datetime.now().date().strftime("%Y"))
 
 # Onglets
-onglets = ttk.Notebook(fenetre,width=800,height=460)   # Création du système d'onglets
+onglets = ttk.Notebook(fenetre,width=750,height=600)   # Création du système d'onglets
 onglets.grid(row=14,column=1)
 onglet1 = ttk.Frame(onglets)       # Ajout de l'onglet 1
 onglet1.grid(row=15,column=0)
@@ -57,9 +65,9 @@ onglet5 = ttk.Frame(onglets)       # Ajout de l'onglet 3
 onglet5.grid(row=15,column=4)
 onglet3 = ttk.Frame(onglets)
 onglet3.grid(row=15, column=2)
-onglets.add(onglet1, text='IFT')      # Nom de l'onglet 1
+onglets.add(onglet1, text='Traitement')      # Nom de l'onglet 1
 onglets.add(onglet2, text='Parcelles')# Nom de l'onglet 2
-onglets.add(onglet3, text='Traitements')
+onglets.add(onglet3, text='Traitements réalisés')
 onglets.add(onglet4, text='Récapitulatif')   # Nom de l'onglet 3
 #onglets.add(onglet5, text='Update')   # Nom de l'onglet 3
 
@@ -132,7 +140,7 @@ resume_gestion_resistances= IntVar(value=1)
 resume_traitements= IntVar(value=1)
 
 # Récupérer les parcelles et leur superficie stockées dans le fichier 'liste_parcelles.xlsx'
-fichier_parcelles = pd.read_excel('liste_parcelles.xlsx')
+fichier_parcelles = pd.read_excel('./config/liste_parcelles.xlsx')
 if len(fichier_parcelles) > 0 :
     for ligne in range(len(fichier_parcelles)):
         recuperer_nom_parcelle=fichier_parcelles['nom_parcelle'].iloc[ligne]
@@ -143,6 +151,9 @@ else :
     dictionnaire_confusion_sexuelle = {}
 
 # Déclaration des fonctions :
+
+def a_propos():
+    messagebox.showinfo("À propos - Luc & Jean-Pierre Drouillet","NOM_DU_PROGRAMME est un programme de suivi de traitements, adapté à la viticulture. \n\nCe logiciel est écrit par Luc Drouillet et Jean-Pierre Drouillet. \n\nSi vous rencontrez des problèmes avec IFT, vous pouvez nous contacter par le biais de ce site internet : https://XXXXXXXXXX")
 
 def tkquit():
     fenetre.destroy()
@@ -236,7 +247,7 @@ def rechercher_doses_unite():                                                   
 
     # Si produit est HERBICIDE afficher une liste qui contient "pré-levée" / "post-levée"
     if herbicide == 1 :
-        combobox_herbicide.grid(row=2,column=2)
+        combobox_herbicide.grid(row=0,column=1)
         combobox_herbicide.current(0)
         herbicide=0
     else :
@@ -248,9 +259,13 @@ def rechercher_doses_unite():                                                   
         application.set(int(application1))
     else :
         application1=0
-        application.set("Pas de limite de passages")
+        application.set("Pas de limite")
     quantite_traitee.delete(0,END)
     quantite_traitee.insert(0,dose_autorisee.get())
+    # ICIICI
+    s2.configure(to=float(dose_autorisee.get()))
+    s2.set(dose_autorisee.get())
+    #
     surface_traitee.delete(0,END)
     surface_traitee.insert(0,dictionnaire_parcelles[parcelle_choisie.get()])
     calcul_IFT()
@@ -293,11 +308,11 @@ def ajouter_parcelle():
     surface_traitee.delete(0,END)
     surface_traitee.insert(0,dictionnaire_parcelles[parcelle_choisie.get()])
     # Manipuler le fichier excel
-    fichier_parcelles_openpyxl = openpyxl.reader.excel.load_workbook('liste_parcelles.xlsx')
+    fichier_parcelles_openpyxl = openpyxl.reader.excel.load_workbook('./config/liste_parcelles.xlsx')
     sheet_en_cours = fichier_parcelles_openpyxl['liste_parcelles']
     sheet_en_cours.append([nom_nouvelle_parcelle, taille_nouvelle_parcelle, taille_confusion])
-    fichier_parcelles_openpyxl.save('liste_parcelles.xlsx')
-    fichier_parcelles = pd.read_excel('liste_parcelles.xlsx')
+    fichier_parcelles_openpyxl.save('./config/liste_parcelles.xlsx')
+    fichier_parcelles = pd.read_excel('./config/liste_parcelles.xlsx')
     messagebox.showinfo("Information","La parcelle a bien été ajoutée.")
     infos_IFT_toute_la_base_de_donnees()
     recapitulatif_total()
@@ -349,17 +364,17 @@ def supprimer_parcelle():
             IFT_herbicides_postlevee_recap.set("")
             IFT_herbicides_recap.set("")
         # Manipuler le fichier excel "liste parcelles"
-        fichier_parcelles = pd.read_excel('liste_parcelles.xlsx')
+        fichier_parcelles = pd.read_excel('./config/liste_parcelles.xlsx')
         index_a_supprimer = fichier_parcelles[ fichier_parcelles['nom_parcelle'] == parcelle_suppression ].index
         fichier_parcelles = fichier_parcelles.drop(index_a_supprimer)
-        fichier_parcelles.to_excel('liste_parcelles.xlsx', sheet_name='liste_parcelles', index=False)
-        fichier_parcelles = pd.read_excel('liste_parcelles.xlsx')
+        fichier_parcelles.to_excel('./config/liste_parcelles.xlsx', sheet_name='liste_parcelles', index=False)
+        fichier_parcelles = pd.read_excel('./config/liste_parcelles.xlsx')
         # Manipuler le fichier excel "IFT"
-        fichier_IFT = pd.read_excel('IFT.xlsx')
+        fichier_IFT = pd.read_excel('./config/IFT.xlsx')
         index_a_supprimer = fichier_IFT[ fichier_IFT['nom_parcelle'] == parcelle_suppression ].index
         fichier_IFT = fichier_IFT.drop(index_a_supprimer)
-        fichier_IFT.to_excel('IFT.xlsx', sheet_name='IFT', index=False)
-        fichier_IFT = pd.read_excel('IFT.xlsx')
+        fichier_IFT.to_excel('./config/IFT.xlsx', sheet_name='IFT', index=False)
+        fichier_IFT = pd.read_excel('./config/IFT.xlsx')
         infos_IFT_par_parcelle()
         infos_IFT_toute_la_base_de_donnees()
         recapitulatif_total()
@@ -392,13 +407,13 @@ def sauvegarde():
         date_traitement=indiquer_date.get_date()
         date_traitement=date_traitement.strftime('%d/%m/%Y')
         # Ajouter à l'excel 'IFT.xlsx'
-        fichier_IFT_openpyxl = openpyxl.reader.excel.load_workbook('IFT.xlsx')
+        fichier_IFT_openpyxl = openpyxl.reader.excel.load_workbook('./config/IFT.xlsx')
         sheet_en_cours = fichier_IFT_openpyxl['IFT']
-        fichier_IFT = pd.read_excel('IFT.xlsx')
+        fichier_IFT = pd.read_excel('./config/IFT.xlsx')
         si_herbicide=produit_herbicide.get()
         sheet_en_cours.append([date_du_jour, date_traitement,nom_produit, numero_amm, substances_actives, utilisation ,fonction_produit,si_herbicide,nom_parcelle,dose_mise,dose_reglementaire,unite,superficie_traitee,superficie_totale_parcelle,IFT_recupere,biocontrole,passage_numero])
-        fichier_IFT_openpyxl.save('IFT.xlsx')
-        fichier_IFT = pd.read_excel('IFT.xlsx')
+        fichier_IFT_openpyxl.save('./config/IFT.xlsx')
+        fichier_IFT = pd.read_excel('./config/IFT.xlsx')
         messagebox.showinfo("Information","Le traitement a été enregistré.")
         infos_IFT_par_parcelle()
         infos_IFT_toute_la_base_de_donnees()
@@ -430,7 +445,7 @@ def infos_IFT_par_parcelle():
     IFT_total=0
     IFT_en_cours=0
     parcelle_a_etudier=parcelle_a_supprimer.get()
-    fichier_IFT = pd.read_excel('IFT.xlsx') # TODO
+    fichier_IFT = pd.read_excel('./config/IFT.xlsx') # TODO
     lignes_contenant_parcelle=fichier_IFT[fichier_IFT['nom_parcelle'].str.contains(parcelle_a_etudier, na=False)]
     for ligne in range(len(lignes_contenant_parcelle)):
         IFT_en_cours=lignes_contenant_parcelle['IFT'].iloc[ligne]
@@ -441,7 +456,7 @@ def infos_IFT_toute_la_base_de_donnees():
     # IFT total sur l'ensemble des parcelles
     # formule : (somme (IFT parcelle * taille parcelle)) / (taille exploitation)  <- regarder IFT biocontrole vs classqiue
     IFT_BDD=0
-    fichier_IFT = pd.read_excel('IFT.xlsx')
+    fichier_IFT = pd.read_excel('./config/IFT.xlsx')
     if len(fichier_IFT) == 0 :
         IFT_base_de_donnees.set(0)
     else :
@@ -472,13 +487,13 @@ def nombre_passages_restants():
         infos_passages=""
         label_passages_restants.set(infos_passages)
         return(il_reste_des_passages)
-    if nombre_passages_autorises == "Pas de limite de passages":
+    if nombre_passages_autorises == "Pas de limite":
         infos_passages=""
         label_passages_restants.set(infos_passages)
         return(il_reste_des_passages)
     else :
         parcelle_a_etudier=parcelle_choisie.get()
-        fichier_IFT = pd.read_excel('IFT.xlsx')
+        fichier_IFT = pd.read_excel('./config/IFT.xlsx')
         lignes_contenant_parcelle=fichier_IFT[fichier_IFT['nom_parcelle'].str.contains(parcelle_a_etudier, na=False)]
         lignes_contenant_parcelle=lignes_contenant_parcelle[lignes_contenant_parcelle['nom_produit'].str.contains(nom_produit_choisi, na=False)]
         for ligne in range(len(lignes_contenant_parcelle)):
@@ -486,7 +501,8 @@ def nombre_passages_restants():
             nombre_passages_total=nombre_passages_total+nombre_passages_en_cours
         passages_restants=int(nombre_passages_autorises)-int(nombre_passages_total)
         if passages_restants >= 0:
-            infos_passages=str("Il reste ") + str(passages_restants) + str(" passages autorisés avec ce produit.")
+            #infos_passages=str("Il reste ") + str(passages_restants) + str(" passages autorisés avec ce produit.")
+            infos_passages=str("Il vous reste ") + str(passages_restants) + str(" passages autorisés dans cette parcelle.")
             label_passages_restants.set(infos_passages)  # Si limite de passages, afficher ce qu'il reste pour la parcelle/produit
             if passages_restants == 0:
                 il_reste_des_passages=0
@@ -498,7 +514,7 @@ def nombre_passages_restants():
             return(il_reste_des_passages)
 
 def mettre_a_jour_bdd():
-    chemin_nouvelle_base=str(os.getcwd())+str("/bdd_phyto.csv")
+    chemin_nouvelle_base=str(os.getcwd())+str("/config/bdd_phyto.csv")
     infos=update.mettre_a_jour()
     if infos == "Votre base de données de produits est déjà à jour." :
         messagebox.showinfo("Information","Votre base de données de produits est déjà la plus récente.")
@@ -652,13 +668,16 @@ def enregistrer_pdf():
 
 def update_label_et_superficie():
     parcelle_selectionnee.config(text=str(dictionnaire_parcelles[parcelle_choisie.get()])+" hectare(s)")
+    parcelle_selectionnee_scale.set(dictionnaire_parcelles[parcelle_choisie.get()])
+    s1.configure(to=float(dictionnaire_parcelles[parcelle_choisie.get()]))
+    s1.set(float(dictionnaire_parcelles[parcelle_choisie.get()]))
     update_superficie_a_choisir()
     #calcul_IFT()
 
 def lire_traitements(): # pour onglet Traitements
     tree.delete(*tree.get_children())
     # Add new data in Treeview widget
-    traitements = pd.read_excel('IFT.xlsx')
+    traitements = pd.read_excel('./config/IFT.xlsx')
     #traitements = traitements[['date_traitement','nom_produit', '']]
     traitements = traitements.drop(['date','numero_AMM','substances_actives','si_herbicide','passage'], axis=1)
     tree["column"] = list(traitements.columns)
@@ -667,7 +686,7 @@ def lire_traitements(): # pour onglet Traitements
     # For Headings iterate over the columns
     for col in tree["column"]:
        tree.heading(col, text=col)
-       tree.column(col, anchor=CENTER, stretch=NO)
+       tree.column(col, anchor=CENTER, width=90, stretch=NO)
 
     # Put Data in Rows
     df_rows = traitements.to_numpy().tolist()
@@ -683,26 +702,41 @@ def supprimer_le_traitement(): # Pour onglet Traitements
         ligne_en_cours = tree.focus()
         # obtenir l'index de la ligne en cours (pour la supprimer de 'IFT.xlsx'
         index_de_la_ligne = tree.index(ligne_en_cours)
-        IFT_openpyxl = openpyxl.reader.excel.load_workbook('IFT.xlsx')
+        IFT_openpyxl = openpyxl.reader.excel.load_workbook('./config/IFT.xlsx')
         sheet_en_cours = IFT_openpyxl['IFT']
         sheet_en_cours.delete_rows(index_de_la_ligne+2, 1)
-        IFT_openpyxl.save('IFT.xlsx')
+        IFT_openpyxl.save('./config/IFT.xlsx')
         tree.delete(tree.selection()[0])
         infos_IFT_toute_la_base_de_donnees()
         recapitulatif_total()
 
+def changer_surface_traitee() :
+    surface_traitee.delete(0,END)
+    surface_traitee.insert(0,parcelle_selectionnee_scale.get())
+    calcul_IFT()
+
+def changer_quantite_traitee() :
+    quantite_traitee.delete(0,END)
+    quantite_traitee.insert(0,quantite_selectionnee_scale.get())
+    calcul_IFT()
+
+
 # Création des différents modules (entrée de texte et listes) [je les mets avant d'organiser les fenêtres (grid), car sinon les fonctions associées aux boutons/événements appellent des noms de variables non chargées)
 # Onglet "IFT"
 # Zone d'entrée de texte par l'utilisateur / liste de sélection par l'utilisateur
-nom_produit = Entry(onglet1, width=50)                                                                      # Nom du produit entré par l'utilisateur
-combobox_liste_produits = ttk.Combobox(onglet1, width = 45, textvariable = produit_choisi)                  # Liste qui contiendra les produits trouvés
-combobox_utilisations = ttk.Combobox(onglet1, width = 45, textvariable = utilisation_choisie)                      # Liste qui contiendra les doses possibles pour le produit sélectionné
+nom_produit = Entry(onglet1, width=45, justify="center")                                                                      # Nom du produit entré par l'utilisateur
+combobox_liste_produits = ttk.Combobox(onglet1, width = 42, textvariable = produit_choisi)                  # Liste qui contiendra les produits trouvés
+frame_utilisation_herbicide = ttk.Frame(onglet1)
+combobox_utilisations = ttk.Combobox(frame_utilisation_herbicide, width = 30, textvariable = utilisation_choisie)                      # Liste qui contiendra les doses possibles pour le produit sélectionné
 label_dose = tkinter.Label (onglet1 ,textvariable = dose_choisie)
-surface_totale = Entry(onglet1, width=50)                                                                   # Surface entrée par l'utilisateur
-surface_traitee = Entry(onglet1, width=50)                                                                  # idem
-quantite_traitee = Entry(onglet1, width=50)                                                                 # Quantité de produit entrée par l'utilisateur
-combobox_parcelles = ttk.Combobox(onglet1, values=list(dictionnaire_parcelles.keys()), width = 45, textvariable = parcelle_choisie)
-combobox_herbicide = ttk.Combobox(onglet1, values=list(['postlevée','prélevée']), width = 15,textvariable=produit_herbicide)
+surface_totale = Entry(onglet1, width=42)                                                                   # Surface entrée par l'utilisateur
+frame_surface_traitee = ttk.Frame(onglet1)
+surface_traitee = Entry(frame_surface_traitee, width=30, justify="center")                                                                  # idem
+frame_quantite_traitee = ttk.Frame(onglet1)
+quantite_traitee = Entry(frame_quantite_traitee, width=30, justify="center")                                                                 # Quantité de produit entrée par l'utilisateur
+frame_parcelles_traitees = ttk.Frame(onglet1)
+combobox_parcelles = ttk.Combobox(frame_parcelles_traitees, values=list(dictionnaire_parcelles.keys()), width = 25, textvariable = parcelle_choisie, justify="center")
+combobox_herbicide = ttk.Combobox(frame_utilisation_herbicide, values=list(['postlevée','prélevée']), width = 10,textvariable=produit_herbicide)
 # Boutons
 #bouton_chercher_produit_entre = tkinter.Button (text = "Rechercher" , command = rechercher_produit)         # Bouton : Rechercher le produit entré dans la case "nom_produit"
 #bouton_valider_produit_trouve = tkinter.Button (text = "Valider" , command = rechercher_meme_dose)          # Bouton : Valider la recherche pour le produit choisi dans la liste "combobox_liste_produits"
@@ -713,15 +747,27 @@ parcelle_totale = tkinter.Label(onglet1, text="hectare(s)")
 zone_texte_nom_produit_a_chercher = tkinter.Label (onglet1 ,text = "Nom du produit cherché :")
 zone_texte_entrer_produit_cherche = tkinter.Label (onglet1 ,text = "Sélectionnez le produit :")
 zone_texte_selectionner_dose = tkinter.Label (onglet1 ,text = "Sélectionnez l'utilisation :")
-zone_texte_IFT = tkinter.Label (onglet1 ,text = "IFT :")
-zone_texte_IFT_calcule = tkinter.Label (onglet1 ,textvariable = IFT)
-zone_texte_dose_reglementaire = tkinter.Label (onglet1 ,text = "Dose réglementaire")
-zone_texte_unite = tkinter.Label (onglet1 ,text = "Unité")
-zone_texte_nombre_passages = tkinter.Label (onglet1 ,text = "Nombre de passages max.")
-zone_texte_dose_reglementaire_trouvee = tkinter.Label (onglet1 ,textvariable = dose_autorisee)
-zone_texte_unite_trouvee = tkinter.Label (onglet1 ,textvariable = unite)
-zone_texte_nombre_passages_trouve = tkinter.Label (onglet1 ,textvariable = application)
+frame_IFT_traitement = ttk.Frame(onglet1, borderwidth=5, relief="solid")
+zone_texte_IFT = tkinter.Label (frame_IFT_traitement ,text = "IFT du traitement :")
+zone_texte_IFT_calcule = tkinter.Label (frame_IFT_traitement ,textvariable = IFT)
+
+#frame_pour_dose_unite_passage = tkinter.Frame(onglet1)
+frame_dose_passage = ttk.Frame(onglet1)
+frame_infos_dose_unite = ttk.Frame(frame_dose_passage, borderwidth=5, relief="solid")
+frame_infos_passage = ttk.Frame(frame_dose_passage, borderwidth=5, relief="solid")
+frame_infos_dose_unite_trouvees = ttk.Frame(frame_infos_dose_unite)
+frame_label_texte_dose_reglementaire = tkinter.Frame(frame_infos_dose_unite)
+zone_texte_dose_reglementaire = tkinter.Label (frame_label_texte_dose_reglementaire ,text = "Dose réglementaire")
+zone_texte_unite = tkinter.Label (frame_infos_dose_unite ,text = "Unité")
+zone_texte_nombre_passages = tkinter.Label (frame_infos_passage ,text = "Nombre de traitements max.")
+zone_texte_dose_reglementaire_trouvee = tkinter.Label (frame_infos_dose_unite_trouvees ,textvariable = dose_autorisee)
+zone_texte_unite_trouvee = tkinter.Label (frame_infos_dose_unite_trouvees ,textvariable = unite)
+zone_texte_nombre_passages_trouve = tkinter.Label (frame_infos_passage ,textvariable = application, width=10)
 zone_texte_surface_totale = tkinter.Label (onglet1 ,text = "Surface totale de la parcelle :")
+frame_infos_dose_unite_trouvees2 = ttk.Frame(frame_quantite_traitee)
+frame_label_hectare = ttk.Frame(frame_surface_traitee)
+zone_texte_hectare = tkinter.Label (frame_label_hectare ,text = "hectare(s)")
+zone_texte_unite_trouvee2 = tkinter.Label (frame_infos_dose_unite_trouvees2 ,textvariable = unite, width=7)
 zone_texte_surface_traitee = tkinter.Label (onglet1 ,text = "Surface traitée :")
 zone_texte_quantite_produit = tkinter.Label (onglet1 ,text = "Dose appliquée :")
 zone_texte_passages_restants = tkinter.Label (onglet1, textvariable = label_passages_restants)
@@ -731,51 +777,88 @@ zone_texte_passages_restants = tkinter.Label (onglet1, textvariable = label_pass
 
 # Organisation des fenêtres et fonctions associées
 # Onglet "IFT"
+# JUMP LINE
+label_vide = tkinter.Label(onglet1, text="")
+label_vide.grid(row=0,column=1)
+####
+    # Ajouter une parcelle
+
+label_ajouter_un_traitement = tkinter.Label(onglet1, text="Ajouter un traitement", font="Times, 18")
+label_ajouter_un_traitement.grid(row=1,column=1)
+
+
 # Zone de recherche du produit
-zone_texte_nom_produit_a_chercher.grid(row = 0, column=0)
+zone_texte_nom_produit_a_chercher.grid(row = 2, column=0)
 nom_produit.bind('<KeyRelease>', (lambda event:rechercher_produit()))
-nom_produit.grid(row=0,column=1)
+nom_produit.grid(row=2,column=1)
 nom_produit.focus_force()     # placement du curseur dans la première entrée.
     # Bouton "Rechercher"
 #bouton_chercher_produit_entre.grid(row=0,column=2)
 
+# JUMP LINE
+label_vide = tkinter.Label(onglet1, text="")
+label_vide.grid(row=3,column=1)
+####
+
 # Liste des produits trouvés
-zone_texte_entrer_produit_cherche.grid(row = 1, column=0)
+zone_texte_entrer_produit_cherche.grid(row = 4, column=0)
 combobox_liste_produits.bind('<<ComboboxSelected>>', lambda event: rechercher_meme_dose() & rechercher_doses_unite())
 combobox_liste_produits['values'] = liste
-combobox_liste_produits.grid(row=1,column=1)
+combobox_liste_produits.grid(row=4,column=1)
     # Bouton "Valider"
 #bouton_valider_produit_trouve.grid(row=1,column=2)
 
 # Sélectionner l'utilisation souhaitée (plusieurs possibles, mais toujours "autorisées")
-zone_texte_selectionner_dose.grid(row = 2, column=0)
+zone_texte_selectionner_dose.grid(row = 5, column=0)
 combobox_utilisations.bind('<<ComboboxSelected>>', lambda event: rechercher_doses_unite())
-combobox_utilisations.grid(row=2,column=1)
+combobox_utilisations.grid(row=0,column=0)
+frame_utilisation_herbicide.grid(row=5,column=1)
 
+# JUMP LINE
+label_vide = tkinter.Label(onglet1, text="")
+label_vide.grid(row=6,column=1)
+####
 
 #bouton_valider_produit_cherche.grid(row=2,column=2)
 
 # Afficher dose autorisée , unité , applications_max
 
-zone_texte_dose_reglementaire.grid(row = 3, column=0)
-zone_texte_unite.grid(row = 3, column=1)
-zone_texte_nombre_passages.grid(row = 3, column=2)
+zone_texte_dose_reglementaire.grid(row = 0, column=0)
+#zone_texte_unite.grid(row = 6, column=1)
+zone_texte_dose_reglementaire_trouvee.grid(row=0,column=0)
+zone_texte_unite_trouvee.grid(row=0,column=1)
+zone_texte_nombre_passages.grid(row = 0, column=0)
+zone_texte_nombre_passages_trouve.grid(row=1,column=0)
+frame_infos_dose_unite.grid(row=0,column=0)
+frame_infos_dose_unite_trouvees.grid(row=1,column=0)
+# JUMP COLUMN
+label_vide = tkinter.Label(frame_dose_passage, text="")
+label_vide.grid(row=0,column=1)
+####
+frame_infos_passage.grid(row=0,column=2)
+frame_label_texte_dose_reglementaire.grid(row=0,column=0)
+frame_dose_passage.grid(row=7,column=1)
 
-zone_texte_dose_reglementaire_trouvee.grid(row=4,column=0)
-zone_texte_unite_trouvee.grid(row=4,column=1)
-zone_texte_nombre_passages_trouve.grid(row=4,column=2)
+
+
+
+# JUMP LINE
+label_vide = tkinter.Label(onglet1, text="")
+label_vide.grid(row=9,column=1)
+####
 
 # Demander la parcelle choisie :
 zone_texte_surface_totale = tkinter.Label (onglet1 ,text = "Parcelle traitée :")
-zone_texte_surface_totale.grid(row = 5, column=0)
+zone_texte_surface_totale.grid(row = 10, column=0)
 # Afficher taille parcelle :
 combobox_parcelles.bind('<<ComboboxSelected>>', lambda event: update_label_et_superficie())
 
 
 
-combobox_parcelles.grid(row=5,column=1)
-parcelle_selectionnee = tkinter.Label(onglet1, text="")
-parcelle_selectionnee.grid(row=5, column=2)
+combobox_parcelles.grid(row=0,column=0)
+frame_parcelles_traitees.grid(row=10,column=1)
+parcelle_selectionnee = tkinter.Label(frame_parcelles_traitees, text="")
+parcelle_selectionnee.grid(row=0, column=1, sticky="w")
 # Si le dictionnaire n'est pas vide, afficher le premier élément, sinon ne rien faire
 if dictionnaire_parcelles:
     combobox_parcelles.current(0)
@@ -783,79 +866,162 @@ if dictionnaire_parcelles:
     surface_traitee.delete(0,END)
     surface_traitee.insert(0,dictionnaire_parcelles[parcelle_choisie.get()])
 else:
-    combobox_parcelles['values'] = ["Ajoutez vos parcelles dans l'onglet 'Parcelles'"] # TODO
+    combobox_parcelles['values'] = ["Aucune parcelle enregistrée. Allez dans l'onglet 'Parcelles'"] # TODO
     combobox_parcelles.current(0)
     surface_traitee.delete(0,END)
 
 
 # Demander surface traitée :
-zone_texte_surface_traitee.grid(row = 6, column=0)
+zone_texte_surface_traitee.grid(row = 11, column=0)
+# SCALE 2022
+parcelle_selectionnee_scale=DoubleVar()
+if dictionnaire_parcelles:
+    parcelle_selectionnee_scale.set(dictionnaire_parcelles[parcelle_choisie.get()])
+else :
+    parcelle_selectionnee_scale.set(1)
+
+s1 = Scale(frame_surface_traitee, variable=parcelle_selectionnee_scale, resolution=0, from_ = 0.00, to = parcelle_selectionnee_scale.get(), orient = HORIZONTAL, command = lambda event : changer_surface_traitee(), showvalue=0)
+s1.grid(row=0,column=0)
+
+
+def update_les_scales():
+    s1.set(surface_traitee.get())
+    s2.set(quantite_traitee.get())
+
 surface_traitee.bind('<KeyRelease-comma>', lambda event : changer_virgule_en_point_surface_traitee())
 surface_traitee.bind('<KeyRelease>', lambda event: calcul_IFT())
-surface_traitee.grid(row=6,column=1)
+surface_traitee.bind('<FocusOut>', lambda event: update_les_scales())
+surface_traitee.grid(row=0,column=1)
+
+zone_texte_unite_trouvee2.grid(row=0,column=1)
+frame_surface_traitee.grid(row=11,column=1)
+zone_texte_hectare.grid(row=0,column=2)
+frame_label_hectare.grid(row=0,column=2)
+
 
 
 # Demander quantité produit :
-zone_texte_quantite_produit.grid(row = 7, column=0)
+quantite_selectionnee_scale=DoubleVar()
+s2 = Scale(frame_quantite_traitee, variable = quantite_selectionnee_scale, resolution=0, from_ = 0.00, to = 1, orient = HORIZONTAL, command = lambda event : changer_quantite_traitee(), showvalue=0)
+s2.grid(row=0,column=0)
+zone_texte_quantite_produit.grid(row = 12, column=0)
 quantite_traitee.bind('<KeyRelease-comma>', lambda event : changer_virgule_en_point_quantite_traitee())
 quantite_traitee.bind('<KeyRelease>', lambda event: calcul_IFT())
-quantite_traitee.grid(row=7,column=1)
+quantite_traitee.bind('<FocusOut>', lambda event: update_les_scales())
+quantite_traitee.grid(row=0,column=1)
+frame_infos_dose_unite_trouvees2.grid(row=0,column=2)
+frame_quantite_traitee.grid(row=12,column=1)
 
 
 #bouton_calcul_IFT.grid(row=8,column=1)
 
-# Afficher IFt :
-zone_texte_IFT.grid(row=9,column=1)
-zone_texte_IFT_calcule.grid(row=10,column=1)
-
 # Afficher nombre de passages restant autorisés :
-zone_texte_passages_restants.grid(row=11,column=1)
+zone_texte_passages_restants.grid(row=8,column=1)
 
 # Demander d'indiquer une date pour le traitement (si rien n'est mis, prendre date du jour)
-zone_texte_indiquer_une_date=tkinter.Label(onglet1, text="Indiquez la date de ce traitement : ")
-zone_texte_indiquer_une_date.grid(row=12,column=0)
-indiquer_date = DateEntry(onglet1, values="Text", year=annee_en_cours, date_pattern="dd/mm/yyyy", locale="fr_FR")
+frame_date_traitement = ttk.Frame(onglet1)
+zone_texte_indiquer_une_date=tkinter.Label(frame_date_traitement, text="Date du traitement : ")
+zone_texte_indiquer_une_date.grid(row=0,column=0)
+indiquer_date = DateEntry(frame_date_traitement, values="Text", year=annee_en_cours, date_pattern="dd/mm/yyyy", locale="fr_FR")
 #indiquer_date = DateEntry(onglet1, values="Text", year=2021, state="readonly", date_pattern="dd/mm/yyyy",textvariable=date_traitement)
-indiquer_date.grid(row=12, column=1, padx=20, pady=5, sticky=W)
+indiquer_date.grid(row=0, column=1, padx=20, pady=5, sticky=W)
+#cal = Calendar(onglet1, selectmode = 'day', year = 2020, month = 5, day = 22)
+#cal.grid(row=17,column=1)
+frame_date_traitement.grid(row=17,column=1)
+
+# JUMP LINE
+label_vide = tkinter.Label(onglet1, text="")
+label_vide.grid(row=18,column=1)
+####
 
 # AJOUTER ENREGISTREMENT avec le boutons sauvegarde de papa
 # Création du bouton de Sauvegarde
 sauvegarde = tkinter.Button (onglet1, text = "Enregistrer le traitement" , command = sauvegarde)
-sauvegarde.grid(row=13,column=1)
+sauvegarde.grid(row=19,column=1)
 #quitter = tkinter.Button(onglet1, text="Quitter", command=tkquit)
 #quitter.grid(row=13,column=2)
 
 # Période date fin (OBLIGE de la mettre ici sinon marche pas... faire avec des classes)
-indiquer_date_fin = DateEntry(onglet4, values="Text", year=annee_en_cours, date_pattern="dd/mm/yyyy", locale="fr_FR")
-indiquer_date_debut = DateEntry(onglet4, values="Text", year=annee_en_cours-1, date_pattern="dd/mm/yyyy", locale="fr_FR")
+frame_dates_recap = ttk.Frame(onglet4)
+indiquer_date_fin = DateEntry(frame_dates_recap, values="Text", year=annee_en_cours, date_pattern="dd/mm/yyyy", locale="fr_FR")
+indiquer_date_debut = DateEntry(frame_dates_recap, values="Text", year=annee_en_cours-1, date_pattern="dd/mm/yyyy", locale="fr_FR")
 indiquer_date_debut.grid(row=1, column=1, padx=20, pady=5, sticky=W)
-indiquer_date_fin.grid(row=1, column=2, padx=20, pady=5, sticky=W)
+label_fleche = tkinter.Label(frame_dates_recap, text=">")
+label_fleche.grid(row=1,column=2)
+indiquer_date_fin.grid(row=1, column=3, padx=20, pady=5, sticky=W)
+label_debut = tkinter.Label(frame_dates_recap, text="Début")
+label_debut.grid(row=2,column=1)
+label_fin = tkinter.Label(frame_dates_recap, text="Fin")
+label_fin.grid(row=2,column=3)
 
 indiquer_date_debut.bind('<<DateEntrySelected>>', lambda event: recapitulatif_total()) # TODO
 indiquer_date_fin.bind('<<DateEntrySelected>>', lambda event: recapitulatif_total())
+frame_dates_recap.grid(row=3,column=1)
+
+# JUMP LINE
+label_vide = tkinter.Label(onglet1, text="")
+label_vide.grid(row=20,column=1)
+####
+
+
+# Afficher IFt :
+zone_texte_IFT.grid(row=0,column=0)
+zone_texte_IFT_calcule.grid(row=0,column=1)
+frame_IFT_traitement.grid(row=21,column=1)
+
 
 # Onglet "Parcelles"
-label_entrer_un_nom_de_parcelle = tkinter.Label(onglet2, text="Entrez un nom de parcelle : ")
-label_entrer_un_nom_de_parcelle.grid(row=0,column=0)
+
+# JUMP LINE
+label_vide = tkinter.Label(onglet2, text="")
+label_vide.grid(row=0,column=1)
+####
+
+    # Ajouter une parcelle
+label_ajouter_une_parcelle = tkinter.Label(onglet2, text="Ajouter une parcelle", font="Times, 18")
+label_ajouter_une_parcelle.grid(row=1,column=1)
+
+# JUMP LINE
+label_vide = tkinter.Label(onglet2, text="")
+label_vide.grid(row=2,column=1)
+####
+
+label_entrer_un_nom_de_parcelle = tkinter.Label(onglet2, text="Nom de la parcelle : ")
+label_entrer_un_nom_de_parcelle.grid(row=3,column=0)
 entrer_un_nom_de_parcelle = Entry(onglet2, width=50)
-entrer_un_nom_de_parcelle.grid(row=0,column=1)
+entrer_un_nom_de_parcelle.grid(row=3,column=1)
 label_entrer_taille_de_parcelle = tkinter.Label(onglet2, text="Superficie en hectares (ex : 0.2) : ")
-label_entrer_taille_de_parcelle.grid(row=1,column=0)
+label_entrer_taille_de_parcelle.grid(row=4,column=0)
 entrer_taille_de_parcelle = Entry(onglet2, width=50)
 entrer_taille_de_parcelle.bind('<KeyRelease-comma>', lambda event : changer_virgule_en_point_entrer_taille_de_parcelle())
-entrer_taille_de_parcelle.grid(row=1,column=1)
+entrer_taille_de_parcelle.grid(row=4,column=1)
 
-label_superficie_confusion_sexuelle = tkinter.Label(onglet2, text="Si la parcelle est en confusion sexuelle, superficie : ")
-label_superficie_confusion_sexuelle.grid(row=2,column=0)
+label_superficie_confusion_sexuelle = tkinter.Label(onglet2, text="Superficie en confusion sexuelle : ")
+label_superficie_confusion_sexuelle.grid(row=5,column=0)
 entrer_superficie_confusion = Entry(onglet2, width=50,textvariable=superficie_confusion_sexuelle)
 entrer_superficie_confusion.bind('<KeyRelease-comma>', lambda event : changer_virgule_en_point_entrer_superficie_confusion())
-entrer_superficie_confusion.grid(row=2,column=1)
+entrer_superficie_confusion.grid(row=5,column=1)
 
 ajouter = tkinter.Button(onglet2, text = "Ajouter cette parcelle" , command = lambda : ajouter_parcelle())
-ajouter.grid(row=3,column=1)
+ajouter.grid(row=6,column=1)
 
-label_parcelles_de_la_base = tkinter.Label(onglet2, text="Choisissez une parcelle :")
-label_parcelles_de_la_base.grid(row=4,column=0)
+
+# JUMP LINE
+label_vide = tkinter.Label(onglet2, text="")
+label_vide.grid(row=7,column=1)
+####
+
+    # Suprimer une parcelle
+label_supprimer_une_parcelle = tkinter.Label(onglet2, text="Supprimer une parcelle", font="Times, 18")
+label_supprimer_une_parcelle.grid(row=8,column=1)
+
+# JUMP LINE
+label_vide = tkinter.Label(onglet2, text="")
+label_vide.grid(row=9,column=1)
+####
+
+label_parcelles_de_la_base = tkinter.Label(onglet2, text="Parcelle à supprimer :")
+label_parcelles_de_la_base.grid(row=10,column=0)
 liste_parcelles_de_la_base = ttk.Combobox(onglet2, values=list(dictionnaire_parcelles.keys()), width = 45, textvariable = parcelle_a_supprimer)
 liste_parcelles_de_la_base.bind('<<ComboboxSelected>>', lambda event: infos_IFT_par_parcelle())
 if dictionnaire_parcelles:
@@ -864,10 +1030,10 @@ if dictionnaire_parcelles:
 else:
     liste_parcelles_de_la_base['values'] = [""]
     liste_parcelles_de_la_base.current(0)
-liste_parcelles_de_la_base.grid(row=4,column=1)
+liste_parcelles_de_la_base.grid(row=10,column=1)
 
-supprimer = tkinter.Button (onglet2, text = "Supprimer la parcelle" , command = lambda : supprimer_parcelle())
-supprimer.grid(row=4,column=2)
+supprimer = tkinter.Button (onglet2, text = "Supprimer" , command = lambda : supprimer_parcelle())
+supprimer.grid(row=11,column=1)
 
 
 #label_IFT_total_parcelle = tkinter.Label(onglet2, text="IFT de la parcelle : ")
@@ -894,8 +1060,17 @@ label_entrer_un_nom_de_parcelle = tkinter.Label(onglet5, textvariable=resultat_m
 
 
 # Onglet "Récapitulatif"
+
+# JUMP LINE
+label_vide = tkinter.Label(onglet4, text="")
+label_vide.grid(row=0,column=0)
+####
+
+label_ajouter_un_traitement = tkinter.Label(onglet4, text="Obtenir un récapitulatif", font="Times, 18")
+label_ajouter_un_traitement.grid(row=1,column=1)
+
 label_recap = tkinter.Label(onglet4, text="Pour quelle parcelle voulez-vous un récapitulatif ?")
-label_recap.grid(row=0,column=0)
+label_recap.grid(row=2,column=0)
 #### Faire une combobox avec "Exploitation totale" et "par parcelle"
 #liste_parcelles_pour_recap = ttk.Combobox(onglet4, values=list(dictionnaire_parcelles.keys())+['-Exploitation'], width = 45, textvariable=liste_parcelles_recap)
 liste_parcelles_pour_recap = ttk.Combobox(onglet4, values=["Toute l'exploitation"]+list(dictionnaire_parcelles.keys()), width = 25, textvariable=liste_parcelles_recap)
@@ -903,215 +1078,241 @@ liste_parcelles_pour_recap = ttk.Combobox(onglet4, values=["Toute l'exploitation
 #    recapitulatif_total() # TODO
 liste_parcelles_pour_recap.current(0)
 liste_parcelles_pour_recap.bind('<<ComboboxSelected>>', lambda event: recapitulatif_total())
-#recapitulatif_total() # A VERIFIER TODO
-liste_parcelles_pour_recap.grid(row=0,column=1)
-
-ouvrir_recap_en_pdf = tkinter.Button(onglet4, text = "Ouvrir le récapitulatif" , command = lambda : ouvrir_pdf())
-ouvrir_recap_en_pdf.grid(row=5,column=2)
-
-enregistrer_recap_en_pdf = tkinter.Button(onglet4, text = "Enregistrer le récapitulatif" , command = lambda : enregistrer_pdf())
-enregistrer_recap_en_pdf.grid(row=6,column=2)
+try :
+    recapitulatif_total()
+except :
+    print("Impossible de charger le récapitulatif rapide.")
+liste_parcelles_pour_recap.grid(row=2,column=1)
 
 indiquer_une_periode=tkinter.Label(onglet4, text="Sélectionnez la période souhaitée (début > fin) : ") # TODO
-indiquer_une_periode.grid(row=1,column=0)
+indiquer_une_periode.grid(row=3,column=0)
+
+
+
+
+
+frame_enregistrement = ttk.Frame(onglet4)
+ouvrir_recap_en_pdf = tkinter.Button(frame_enregistrement, text = "Ouvrir le récapitulatif" , command = lambda : ouvrir_pdf())
+ouvrir_recap_en_pdf.grid(row=0,column=0)
+
+enregistrer_recap_en_pdf = tkinter.Button(frame_enregistrement, text = "Enregistrer le récapitulatif" , command = lambda : enregistrer_pdf())
+enregistrer_recap_en_pdf.grid(row=1,column=0)
+
 #indiquer_date_debut = DateEntry(onglet4, values="Text", year=2021, date_pattern="dd/mm/yyyy", locale="fr_FR")
 #indiquer_date_debut.grid(row=1, column=1, padx=20, pady=5, sticky=W)
 #indiquer_date_fin = DateEntry(onglet4, values="Text", year=2021, date_pattern="dd/mm/yyyy", locale="fr_FR")
 #indiquer_date_fin.grid(row=1, column=2, padx=20, pady=5, sticky=W)
 
+# JUMP LINE
+label_vide = tkinter.Label(frame_enregistrement, text="")
+label_vide.grid(row=2,column=0)
+####
+
 # Cases à cocher pour enregistrement :
-Checkbutton(onglet4 , text="résumé IFT", variable=resume_IFT).grid(row=2, column=2)
-Checkbutton(onglet4 , text="gestion des résistances", variable=resume_gestion_resistances).grid(row=3, column=2)
-Checkbutton(onglet4 , text="résumé des traitements", variable=resume_traitements).grid(row=4, column=2)
+frame_checkbuttons = ttk.Frame(frame_enregistrement, borderwidth=5, relief="solid")
+label_infos_a_inclure = tkinter.Label(frame_checkbuttons, text="Informations à inclure dans le récapitulatif :")
+label_infos_a_inclure.grid(row=0,column=0)
+Checkbutton(frame_checkbuttons , text="résumé IFT", variable=resume_IFT).grid(row=1, column=0,sticky="w")
+Checkbutton(frame_checkbuttons , text="gestion des résistances", variable=resume_gestion_resistances).grid(row=2, column=0, sticky="w")
+Checkbutton(frame_checkbuttons , text="résumé des traitements", variable=resume_traitements).grid(row=3, column=0, sticky="w")
+frame_checkbuttons.grid(row=3,column=0)
+frame_enregistrement.grid(row=5,column=1)
 
 
 
 # IFT total
-label_IFT_total = tkinter.Label(onglet4, text="IFT total")
-label_IFT_total.grid(row=2,column=0)
-resultat_IFT_total = tkinter.Label(onglet4, textvariable=IFT_total_recap)
+frame_IFT = ttk.Frame(onglet4, borderwidth=5, relief="solid")
+frame_header_IFT = ttk.Frame(frame_IFT)
+label_header = tkinter.Label(frame_header_IFT, text="Récapitulatif rapide IFT", font='Arial 11')
+label_header.grid(row=0,column=0)
+frame_header_IFT.grid(row=1,column=0)
+label_IFT_total = tkinter.Label(frame_IFT, text="IFT total")
+label_IFT_total.grid(row=2,column=0,sticky="w")
+resultat_IFT_total = tkinter.Label(frame_IFT, textvariable=IFT_total_recap)
 resultat_IFT_total.grid(row=2,column=1)
 
-label_IFT_classique = tkinter.Label(onglet4, text="IFT classique")
-label_IFT_classique.grid(row=3,column=0)
-resultat_IFT_classique = tkinter.Label(onglet4, textvariable=IFT_classique_recap)
+label_IFT_classique = tkinter.Label(frame_IFT, text="IFT classique")
+label_IFT_classique.grid(row=3,column=0,sticky="w")
+resultat_IFT_classique = tkinter.Label(frame_IFT, textvariable=IFT_classique_recap)
 resultat_IFT_classique.grid(row=3,column=1)
 
-label_IFT_biocontrole = tkinter.Label(onglet4, text="IFT biocontrôle")
-label_IFT_biocontrole.grid(row=4,column=0)
-resultat_IFT_biocontrole = tkinter.Label(onglet4, textvariable=IFT_biocontrole_recap)
+label_IFT_biocontrole = tkinter.Label(frame_IFT, text="IFT biocontrôle")
+label_IFT_biocontrole.grid(row=4,column=0,sticky="w")
+resultat_IFT_biocontrole = tkinter.Label(frame_IFT, textvariable=IFT_biocontrole_recap)
 resultat_IFT_biocontrole.grid(row=4,column=1)
 
-label_IFT_mildiou = tkinter.Label(onglet4, text="IFT Mildiou")
-label_IFT_mildiou.grid(row=5,column=0)
-resultat_IFT_mildiou = tkinter.Label(onglet4, textvariable=IFT_mildiou_recap)
+label_IFT_mildiou = tkinter.Label(frame_IFT, text="IFT Mildiou")
+label_IFT_mildiou.grid(row=5,column=0,sticky="w")
+resultat_IFT_mildiou = tkinter.Label(frame_IFT, textvariable=IFT_mildiou_recap)
 resultat_IFT_mildiou.grid(row=5,column=1)
 
-label_IFT_oidium = tkinter.Label(onglet4, text="IFT Oïdium")
-label_IFT_oidium.grid(row=6,column=0)
-resultat_IFT_oidium = tkinter.Label(onglet4, textvariable=IFT_oidium_recap)
+label_IFT_oidium = tkinter.Label(frame_IFT, text="IFT Oïdium")
+label_IFT_oidium.grid(row=6,column=0,sticky="w")
+resultat_IFT_oidium = tkinter.Label(frame_IFT, textvariable=IFT_oidium_recap)
 resultat_IFT_oidium.grid(row=6,column=1)
 
-label_IFT_botrytis = tkinter.Label(onglet4, text="IFT Botrytis")
-label_IFT_botrytis.grid(row=7,column=0)
-resultat_IFT_botrytis = tkinter.Label(onglet4, textvariable=IFT_botrytis_recap)
+label_IFT_botrytis = tkinter.Label(frame_IFT, text="IFT Botrytis")
+label_IFT_botrytis.grid(row=7,column=0,sticky="w")
+resultat_IFT_botrytis = tkinter.Label(frame_IFT, textvariable=IFT_botrytis_recap)
 resultat_IFT_botrytis.grid(row=7,column=1)
 
-label_IFT_autres_fongicides = tkinter.Label(onglet4, text="IFT autres fongicides")
-label_IFT_autres_fongicides.grid(row=8,column=0)
-resultat_IFT_autres_fongicides = tkinter.Label(onglet4, textvariable=IFT_autres_fongicides_recap)
+label_IFT_autres_fongicides = tkinter.Label(frame_IFT, text="IFT autres fongicides")
+label_IFT_autres_fongicides.grid(row=8,column=0,sticky="w")
+resultat_IFT_autres_fongicides = tkinter.Label(frame_IFT, textvariable=IFT_autres_fongicides_recap)
 resultat_IFT_autres_fongicides.grid(row=8,column=1)
 
-label_IFT_fongicide_total = tkinter.Label(onglet4, text="IFT fongicides total")
-label_IFT_fongicide_total.grid(row=9,column=0)
-resultat_IFT_fongicide_total = tkinter.Label(onglet4, textvariable=IFT_fongicides_total_recap)
+label_IFT_fongicide_total = tkinter.Label(frame_IFT, text="IFT fongicides total")
+label_IFT_fongicide_total.grid(row=9,column=0,sticky="w")
+resultat_IFT_fongicide_total = tkinter.Label(frame_IFT, textvariable=IFT_fongicides_total_recap)
 resultat_IFT_fongicide_total.grid(row=9,column=1)
 
-label_IFT_confu = tkinter.Label(onglet4, text="IFT confusion sexuelle")
-label_IFT_confu.grid(row=10,column=0)
-resultat_IFT_confu = tkinter.Label(onglet4, textvariable=IFT_confusion_sexuelle_recap)
+label_IFT_confu = tkinter.Label(frame_IFT, text="IFT confusion sexuelle")
+label_IFT_confu.grid(row=10,column=0,sticky="w")
+resultat_IFT_confu = tkinter.Label(frame_IFT, textvariable=IFT_confusion_sexuelle_recap)
 resultat_IFT_confu.grid(row=10,column=1)
 
-label_IFT_acaricides = tkinter.Label(onglet4, text="IFT acariens")
-label_IFT_acaricides.grid(row=11,column=0)
-resultat_IFT_acaricides = tkinter.Label(onglet4, textvariable=IFT_acariens_recap)
+label_IFT_acaricides = tkinter.Label(frame_IFT, text="IFT acariens")
+label_IFT_acaricides.grid(row=11,column=0,sticky="w")
+resultat_IFT_acaricides = tkinter.Label(frame_IFT, textvariable=IFT_acariens_recap)
 resultat_IFT_acaricides.grid(row=11,column=1)
 
-label_IFT_autres_acaricides = tkinter.Label(onglet4, text="IFT autres insecticides")
-label_IFT_autres_acaricides.grid(row=12,column=0)
-resultat_IFT_autres_acaricides = tkinter.Label(onglet4, textvariable=IFT_autres_acaricides_recap)
+label_IFT_autres_acaricides = tkinter.Label(frame_IFT, text="IFT autres insecticides")
+label_IFT_autres_acaricides.grid(row=12,column=0,sticky="w")
+resultat_IFT_autres_acaricides = tkinter.Label(frame_IFT, textvariable=IFT_autres_acaricides_recap)
 resultat_IFT_autres_acaricides.grid(row=12,column=1)
 
-label_IFT_insecticide_total = tkinter.Label(onglet4, text="IFT insecticide total")
-label_IFT_insecticide_total.grid(row=13,column=0)
-resultat_IFT_insecticide_total = tkinter.Label(onglet4, textvariable=IFT_insecticide_recap)
+label_IFT_insecticide_total = tkinter.Label(frame_IFT, text="IFT insecticide total")
+label_IFT_insecticide_total.grid(row=13,column=0,sticky="w")
+resultat_IFT_insecticide_total = tkinter.Label(frame_IFT, textvariable=IFT_insecticide_recap)
 resultat_IFT_insecticide_total.grid(row=13,column=1)
 
-label_IFT_hors_herbicide = tkinter.Label(onglet4, text="IFT hors herbicides")
-label_IFT_hors_herbicide.grid(row=14,column=0)
-resultat_IFT_hors_herbicide = tkinter.Label(onglet4, textvariable=IFT_hors_herbicides_recap)
+label_IFT_hors_herbicide = tkinter.Label(frame_IFT, text="IFT hors herbicides")
+label_IFT_hors_herbicide.grid(row=14,column=0,sticky="w")
+resultat_IFT_hors_herbicide = tkinter.Label(frame_IFT, textvariable=IFT_hors_herbicides_recap)
 resultat_IFT_hors_herbicide.grid(row=14,column=1)
 
-label_IFT_herbicide_prelevee = tkinter.Label(onglet4, text="IFT herbicides prélevée")
-label_IFT_herbicide_prelevee.grid(row=15,column=0)
-resultat_IFT_herbicide_prelevee = tkinter.Label(onglet4, textvariable=IFT_herbicides_prelevee_recap)
+label_IFT_herbicide_prelevee = tkinter.Label(frame_IFT, text="IFT herbicides prélevée")
+label_IFT_herbicide_prelevee.grid(row=15,column=0,sticky="w")
+resultat_IFT_herbicide_prelevee = tkinter.Label(frame_IFT, textvariable=IFT_herbicides_prelevee_recap)
 resultat_IFT_herbicide_prelevee.grid(row=15,column=1)
 
-label_IFT_herbicide_postlevee = tkinter.Label(onglet4, text="IFT herbicides postlevée")
-label_IFT_herbicide_postlevee.grid(row=16,column=0)
-resultat_IFT_herbicide_postlevee = tkinter.Label(onglet4, textvariable=IFT_herbicides_postlevee_recap)
+label_IFT_herbicide_postlevee = tkinter.Label(frame_IFT, text="IFT herbicides postlevée")
+label_IFT_herbicide_postlevee.grid(row=16,column=0,sticky="w")
+resultat_IFT_herbicide_postlevee = tkinter.Label(frame_IFT, textvariable=IFT_herbicides_postlevee_recap)
 resultat_IFT_herbicide_postlevee.grid(row=16,column=1)
 
-label_IFT_herbicide = tkinter.Label(onglet4, text="IFT herbicides")
-label_IFT_herbicide.grid(row=17,column=0)
-resultat_IFT_herbicide = tkinter.Label(onglet4, textvariable=IFT_herbicides_recap)
+label_IFT_herbicide = tkinter.Label(frame_IFT, text="IFT herbicides")
+label_IFT_herbicide.grid(row=17,column=0,sticky="w")
+resultat_IFT_herbicide = tkinter.Label(frame_IFT, textvariable=IFT_herbicides_recap)
 resultat_IFT_herbicide.grid(row=17,column=1)
+
+frame_IFT.grid(row=5,column=0)
 
 
 # Gestion des résistances
-#label_gestion_phenylpyrroles = tkinter.Label(onglet4, text="Phénylpyrolles")
+#label_gestion_phenylpyrroles = tkinter.Label(frame_IFT, text="Phénylpyrolles")
 #label_gestion_phenylpyrroles.grid(row=2,column=2)
-resultat_gestion_phenylpyrroles = tkinter.Label(onglet4, textvariable=gestion_phenylpyrroles)
+resultat_gestion_phenylpyrroles = tkinter.Label(frame_IFT, textvariable=gestion_phenylpyrroles)
 #resultat_gestion_phenylpyrroles.grid(row=2,column=3)
 #
-#label_gestion_ANP = tkinter.Label(onglet4, text="ANP")
+#label_gestion_ANP = tkinter.Label(frame_IFT, text="ANP")
 #label_gestion_ANP.grid(row=3,column=2)
-resultat_gestion_ANP = tkinter.Label(onglet4, textvariable=gestion_ANP)
+resultat_gestion_ANP = tkinter.Label(frame_IFT, textvariable=gestion_ANP)
 #resultat_gestion_ANP.grid(row=3,column=3)
 #
-#label_gestion_IBS3 = tkinter.Label(onglet4, text="IBS3")
+#label_gestion_IBS3 = tkinter.Label(frame_IFT, text="IBS3")
 #label_gestion_IBS3.grid(row=4,column=2)
-resultat_gestion_IBS3 = tkinter.Label(onglet4, textvariable=gestion_IBS3)
+resultat_gestion_IBS3 = tkinter.Label(frame_IFT, textvariable=gestion_IBS3)
 #resultat_gestion_IBS3.grid(row=4,column=3)
 #
-#label_gestion_SDHI = tkinter.Label(onglet4, text="SDHI")
+#label_gestion_SDHI = tkinter.Label(frame_IFT, text="SDHI")
 #label_gestion_SDHI.grid(row=5,column=2)
-resultat_gestion_SDHI = tkinter.Label(onglet4, textvariable=gestion_SDHI)
+resultat_gestion_SDHI = tkinter.Label(frame_IFT, textvariable=gestion_SDHI)
 #resultat_gestion_SDHI.grid(row=5,column=3)
 #
-#label_gestion_CAA = tkinter.Label(onglet4, text="CAA")
+#label_gestion_CAA = tkinter.Label(frame_IFT, text="CAA")
 #label_gestion_CAA.grid(row=6,column=2)
-resultat_gestion_CAA = tkinter.Label(onglet4, textvariable=gestion_CAA)
+resultat_gestion_CAA = tkinter.Label(frame_IFT, textvariable=gestion_CAA)
 #resultat_gestion_CAA.grid(row=6,column=3)
 #
-#label_gestion_zoxamide = tkinter.Label(onglet4, text="Zoxamide")
+#label_gestion_zoxamide = tkinter.Label(frame_IFT, text="Zoxamide")
 #label_gestion_zoxamide.grid(row=7,column=2)
-resultat_gestion_zoxamide = tkinter.Label(onglet4, textvariable=gestion_zoxamide)
+resultat_gestion_zoxamide = tkinter.Label(frame_IFT, textvariable=gestion_zoxamide)
 #resultat_gestion_zoxamide.grid(row=7,column=3)
 #
-#label_gestion_Qil = tkinter.Label(onglet4, text="Qil")
+#label_gestion_Qil = tkinter.Label(frame_IFT, text="Qil")
 #label_gestion_Qil.grid(row=8,column=2)
-resultat_gestion_Qil = tkinter.Label(onglet4, textvariable=gestion_Qil)
+resultat_gestion_Qil = tkinter.Label(frame_IFT, textvariable=gestion_Qil)
 #resultat_gestion_Qil.grid(row=8,column=3)
 #
-#label_gestion_qosi = tkinter.Label(onglet4, text="QoSI/Qiol")
+#label_gestion_qosi = tkinter.Label(frame_IFT, text="QoSI/Qiol")
 #label_gestion_qosi.grid(row=9,column=2)
-resultat_gestion_qosi = tkinter.Label(onglet4, textvariable=gestion_qosi)
+resultat_gestion_qosi = tkinter.Label(frame_IFT, textvariable=gestion_qosi)
 #resultat_gestion_qosi.grid(row=9,column=3)
 #
-#label_gestion_fluopicolide = tkinter.Label(onglet4, text="Fluopicolide")
+#label_gestion_fluopicolide = tkinter.Label(frame_IFT, text="Fluopicolide")
 #label_gestion_fluopicolide.grid(row=10,column=2)
-resultat_gestion_fluopicolide = tkinter.Label(onglet4, textvariable=gestion_fluopicolide)
+resultat_gestion_fluopicolide = tkinter.Label(frame_IFT, textvariable=gestion_fluopicolide)
 #resultat_gestion_fluopicolide.grid(row=10,column=3)
 #
-#label_gestion_oxathiapiproline = tkinter.Label(onglet4, text="Oxathiapiproline")
+#label_gestion_oxathiapiproline = tkinter.Label(frame_IFT, text="Oxathiapiproline")
 #label_gestion_oxathiapiproline.grid(row=11,column=2)
-resultat_gestion_oxathiapiproline = tkinter.Label(onglet4, textvariable=gestion_oxathiapiproline)
+resultat_gestion_oxathiapiproline = tkinter.Label(frame_IFT, textvariable=gestion_oxathiapiproline)
 #resultat_gestion_oxathiapiproline.grid(row=11,column=3)
 #
-#label_gestion_anilides = tkinter.Label(onglet4, text="Anilides")
+#label_gestion_anilides = tkinter.Label(frame_IFT, text="Anilides")
 #label_gestion_anilides.grid(row=12,column=2)
-resultat_gestion_anilides = tkinter.Label(onglet4, textvariable=gestion_anilides)
+resultat_gestion_anilides = tkinter.Label(frame_IFT, textvariable=gestion_anilides)
 #resultat_gestion_anilides.grid(row=12,column=3)
 #
-#label_gestion_cymoxanil = tkinter.Label(onglet4, text="Cymoxanil")
+#label_gestion_cymoxanil = tkinter.Label(frame_IFT, text="Cymoxanil")
 #label_gestion_cymoxanil.grid(row=13,column=2)
-resultat_gestion_cymoxanil = tkinter.Label(onglet4, textvariable=gestion_cymoxanil)
+resultat_gestion_cymoxanil = tkinter.Label(frame_IFT, textvariable=gestion_cymoxanil)
 #resultat_gestion_cymoxanil.grid(row=13,column=3)
 #
-#label_gestion_qoicontact = tkinter.Label(onglet4, text="QoI+contact")
+#label_gestion_qoicontact = tkinter.Label(frame_IFT, text="QoI+contact")
 #label_gestion_qoicontact.grid(row=14,column=2)
-resultat_gestion_qoicontact = tkinter.Label(onglet4, textvariable=gestion_qoicontact)
+resultat_gestion_qoicontact = tkinter.Label(frame_IFT, textvariable=gestion_qoicontact)
 #resultat_gestion_qoicontact.grid(row=14,column=3)
 #
-#label_gestion_spiroxamine = tkinter.Label(onglet4, text="Spiroxamine")
+#label_gestion_spiroxamine = tkinter.Label(frame_IFT, text="Spiroxamine")
 #label_gestion_spiroxamine.grid(row=15,column=2)
-resultat_gestion_spiroxamine = tkinter.Label(onglet4, textvariable=gestion_spiroxamine)
+resultat_gestion_spiroxamine = tkinter.Label(frame_IFT, textvariable=gestion_spiroxamine)
 #resultat_gestion_spiroxamine.grid(row=15,column=3)
 #
-#label_gestion_APK = tkinter.Label(onglet4, text="APK")
+#label_gestion_APK = tkinter.Label(frame_IFT, text="APK")
 #label_gestion_APK.grid(row=16,column=2)
-resultat_gestion_APK = tkinter.Label(onglet4, textvariable=gestion_APK)
+resultat_gestion_APK = tkinter.Label(frame_IFT, textvariable=gestion_APK)
 #resultat_gestion_APK.grid(row=16,column=3)
 #
-#label_gestion_SDHI_fluopyram = tkinter.Label(onglet4, text="SDHI (fluopyram)")
+#label_gestion_SDHI_fluopyram = tkinter.Label(frame_IFT, text="SDHI (fluopyram)")
 #label_gestion_SDHI_fluopyram.grid(row=17,column=2)
-resultat_gestion_SDHI_fluopyram = tkinter.Label(onglet4, textvariable=gestion_SDHI_fluopyram)
+resultat_gestion_SDHI_fluopyram = tkinter.Label(frame_IFT, textvariable=gestion_SDHI_fluopyram)
 #resultat_gestion_SDHI_fluopyram.grid(row=17,column=3)
 #
-#label_gestion_SDHI_boscalid = tkinter.Label(onglet4, text="SDHI (boscalid)")
+#label_gestion_SDHI_boscalid = tkinter.Label(frame_IFT, text="SDHI (boscalid)")
 #label_gestion_SDHI_boscalid.grid(row=18,column=2)
-resultat_gestion_SDHI_boscalid = tkinter.Label(onglet4, textvariable=gestion_SDHI_boscalid)
+resultat_gestion_SDHI_boscalid = tkinter.Label(frame_IFT, textvariable=gestion_SDHI_boscalid)
 #resultat_gestion_SDHI_boscalid.grid(row=18,column=3)
 #
-#label_gestion_SDHI_fluxapyroxad = tkinter.Label(onglet4, text="SDHI (fluxapyroxad)")
+#label_gestion_SDHI_fluxapyroxad = tkinter.Label(frame_IFT, text="SDHI (fluxapyroxad)")
 #label_gestion_SDHI_fluxapyroxad.grid(row=19,column=2)
-resultat_gestion_SDHI_fluxapyroxad = tkinter.Label(onglet4, textvariable=gestion_SDHI_fluxapyroxad)
+resultat_gestion_SDHI_fluxapyroxad = tkinter.Label(frame_IFT, textvariable=gestion_SDHI_fluxapyroxad)
 #resultat_gestion_SDHI_fluxapyroxad.grid(row=19,column=3)
 #
-#label_gestion_IBS1 = tkinter.Label(onglet4, text="IBS1")
+#label_gestion_IBS1 = tkinter.Label(frame_IFT, text="IBS1")
 #label_gestion_IBS1.grid(row=20,column=2)
-resultat_gestion_IBS1 = tkinter.Label(onglet4, textvariable=gestion_IBS1)
+resultat_gestion_IBS1 = tkinter.Label(frame_IFT, textvariable=gestion_IBS1)
 #resultat_gestion_IBS1.grid(row=20,column=3)
 #
 #label_gestion_AZN = tkinter.Label(onglet4, text="AZN")
 #label_gestion_AZN.grid(row=21,column=2)
-resultat_gestion_AZN = tkinter.Label(onglet4, textvariable=gestion_AZN)
+resultat_gestion_AZN = tkinter.Label(frame_IFT, textvariable=gestion_AZN)
 #resultat_gestion_AZN.grid(row=21,column=3)
 #
-#label_gestion_cyflufenamid = tkinter.Label(onglet4, text="Cyflufenamid")
+#label_gestion_cyflufenamid = tkinter.Label(frame_IFT, text="Cyflufenamid")
 #label_gestion_cyflufenamid.grid(row=22,column=2)
-resultat_gestion_cyflufenamid = tkinter.Label(onglet4, textvariable=gestion_cyflufenamid)
+resultat_gestion_cyflufenamid = tkinter.Label(frame_IFT, textvariable=gestion_cyflufenamid)
 #resultat_gestion_cyflufenamid.grid(row=22,column=3)
 
 # return(IFT_classique , IFT_biocontrole , IFT_total , IFT_mildiou , IFT_oidium , IFT_botrytis , IFT_autres_fongicides , IFT_fongicide_total , IFT_confusion_sexuelle , IFT_acaricides , IFT_autres_acaricides , IFT_insecticide_total , IFT_hors_herbicides , IFT_herbicide)
@@ -1123,16 +1324,17 @@ resultat_gestion_cyflufenamid = tkinter.Label(onglet4, textvariable=gestion_cyfl
 
 # Create a Treeview widget
 #tree = ttk.Treeview(onglet3,selectmode ='extended')
-tree = ttk.Treeview(onglet3,selectmode ='browse')
+tree = ttk.Treeview(onglet3,selectmode ='browse', height=24)
 lire_traitements()
 
 # Barre verticale (mais problemes... TODO)
 scrollbar_verticale = ttk.Scrollbar(onglet3, orient="vertical", command=tree.yview)
-tree.configure(yscroll=scrollbar_verticale.set)
 scrollbar_verticale.pack(side='right',fill='y')
+#tree.configure(yscroll=scrollbar_verticale.set)
+tree.configure(yscrollcommand=scrollbar_verticale.set)
+tree.pack()
 
 #tree.bind("<<TreeviewSelect>>", lambda event : obtenir_le_nom_de_la_ligne())
-tree.pack()
 
 #tree.grid(row=0,column=0)
 #tree.pack(expand=YES, fill="both")
@@ -1144,6 +1346,7 @@ scrollbar_horizontale.pack(fill='x')
 
 bouton_supprimer_traitement = tkinter.Button (onglet3, text = "Supprimer le traitement" , command = lambda : supprimer_le_traitement() )
 bouton_supprimer_traitement.pack()
+
 
 
 # Bar de menu
@@ -1169,9 +1372,11 @@ edit.add_command(label="Mettre la base des produits à jour", command = lambda :
 
 menubar.add_cascade(label="Édition", menu=edit)
 help = Menu(menubar, tearoff=0)
-help.add_command(label="À propos")
+help.add_command(label="À propos", command = lambda : a_propos())
 menubar.add_cascade(label="Aide", menu=help)
 
 fenetre.config(menu=menubar)
+
+
 
 fenetre.mainloop ()

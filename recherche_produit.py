@@ -9,7 +9,7 @@ import time
 
 # Rechercher le produit
 
-df = pd.read_csv ('bdd_phyto.csv',sep=';')
+df = pd.read_csv ('./config/bdd_phyto.csv',sep=';')
 
 def backslasher_les_caracteres_speciaux(variable_a_backslasher):
     variable_originale=variable_a_backslasher
@@ -26,7 +26,7 @@ def backslasher_les_caracteres_speciaux(variable_a_backslasher):
     return(variable_backslashee , variable_originale)
 
 def produits_possibles(produit_a_chercher):
-    df = pd.read_csv ('bdd_phyto.csv',sep=';')
+    df = pd.read_csv ('./config/bdd_phyto.csv',sep=';')
     lignes_qui_contiennent_le_nom_du_produit=df[df['(produit) nom produit'].str.contains(produit_a_chercher, na=False, case=False)]
     if lignes_qui_contiennent_le_nom_du_produit.empty:
         liste_produits_possibles=["Le produit n'est pas trouvé."]
@@ -135,20 +135,20 @@ def recuperer_infos(nom_du_produit,utilisation_produit,dose_produit):
 
 def recapitulatif(nom_parcelle,surface_exploitation,periode,debut,fin):
     # Si IFT vide : retourner les valeurs 0 pour tous les IFT
-    tester_si_IFT_vide = pd.read_excel('IFT.xlsx')
+    tester_si_IFT_vide = pd.read_excel('./config/IFT.xlsx')
     if tester_si_IFT_vide.empty :
         return(0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
     premiere_date_traitement=""
     if periode == 1 :
-        fichier_IFT = pd.read_excel('IFT.xlsx')
+        fichier_IFT = pd.read_excel('./config/IFT.xlsx')
         fichier_IFT['date_traitement'] = pd.to_datetime(fichier_IFT['date_traitement'], format = '%d/%m/%Y')
         debut_formate = pd.to_datetime(debut, format = "%d/%m/%Y")
         fin_formate = pd.to_datetime(fin, format = "%d/%m/%Y")
         fichier_IFT = fichier_IFT[(fichier_IFT['date_traitement'] >= debut_formate ) & (fichier_IFT['date_traitement'] <= fin_formate)]
         fichier_IFT['date_traitement'] = fichier_IFT['date_traitement'].dt.strftime('%d/%m/%Y')
     else :
-        fichier_IFT = pd.read_excel('IFT.xlsx')
+        fichier_IFT = pd.read_excel('./config/IFT.xlsx')
         if nom_parcelle == "Toute l'exploitation" :
             premiere_date_traitement = fichier_IFT['date_traitement'].iloc[0]
             premiere_date_traitement_formate = pd.to_datetime(premiere_date_traitement, format = "%d/%m/%Y")
@@ -183,7 +183,7 @@ def recapitulatif(nom_parcelle,surface_exploitation,periode,debut,fin):
         surface_exploitation=base['surface_totale_parcelle'].iloc[0]
 
     # Surface en confusion sexuelle #TODO
-    liste_parcelles= pd.read_excel('liste_parcelles.xlsx')
+    liste_parcelles= pd.read_excel('./config/liste_parcelles.xlsx')
     surface_en_confusion_sexuelle=0 ##### TODO !!!!!!!
     if nom_parcelle == "Toute l'exploitation" :
         for i in range(len(liste_parcelles)):
@@ -636,7 +636,7 @@ def enregistrer_en_pdf(ouvrir_ou_enregistrer,nom_parcelle,surface_exploitation,p
     debut_formate = pd.to_datetime(debut, format = "%d/%m/%Y")
     fin_formate = pd.to_datetime(fin, format = "%d/%m/%Y")
     if periode == 1 :
-        traitements = pd.read_excel('IFT.xlsx')
+        traitements = pd.read_excel('./config/IFT.xlsx')
         #traitements = traitements[(traitements['date_traitement'] >= debut ) & (traitements['date_traitement'] <= fin)]
         traitements['date_traitement'] = pd.to_datetime(traitements['date_traitement'], format = '%d/%m/%Y')
         traitements = traitements[(traitements['date_traitement'] >= debut_formate ) & (traitements['date_traitement'] <= fin_formate)]
@@ -645,7 +645,7 @@ def enregistrer_en_pdf(ouvrir_ou_enregistrer,nom_parcelle,surface_exploitation,p
         # Remettre les dates au bon format
         traitements['date_traitement'] = traitements['date_traitement'].dt.strftime('%d/%m/%Y')
     else :
-        traitements = pd.read_excel('IFT.xlsx')
+        traitements = pd.read_excel('./config/IFT.xlsx')
         traitements['date_traitement'] = pd.to_datetime(traitements['date_traitement'], format = '%d/%m/%Y')
         # Trier les dates
         traitements = traitements.sort_values(['date_traitement', 'nom_parcelle']) # trier par date (de l'ancienne à nouvelle) puis par parcelle TODO
