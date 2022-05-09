@@ -40,7 +40,7 @@ fenetre = tkinter.Tk ()                         # création de la fenêtre princ
 
 # test theme
 style = ttk.Style(fenetre)
-fenetre.tk.call("source", "azure-theme/azure.tcl")
+fenetre.tk.call("source", "./config/azure-theme/azure.tcl")
 fenetre.tk.call("set_theme", "light")
 # https://github.com/rdbende/Azure-ttk-theme
 
