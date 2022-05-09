@@ -95,11 +95,6 @@ def mettre_a_jour():
                 nouvelle_bdd = nouvelle_bdd.append(ligne_en_cours, ignore_index=True)
 
 
-
-            #for noms in liste_noms_produits :
-            #    print(noms)
-            #nouvelle_bdd = nouvelle_bdd.append(new_row, ignore_index=True)
-
     # Remplace l'ancienne BDD
     chemin_enregistrement = str(chemin_actuel)+str("/bdd_phyto.csv")
     # Changer les en-tête ?
