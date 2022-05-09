@@ -32,6 +32,7 @@ def produits_possibles(produit_a_chercher):
         liste_produits_possibles=["Le produit n'est pas trouvé."]
         return(liste_produits_possibles)
         return
+        #####
     lignes_indiquant_le_retrait_du_produit=lignes_qui_contiennent_le_nom_du_produit[lignes_qui_contiennent_le_nom_du_produit['etat usage'].str.contains("Retrait", na=False, case=False)]
     lignes_indiquant_autorisation=lignes_qui_contiennent_le_nom_du_produit[lignes_qui_contiennent_le_nom_du_produit['etat usage'].str.contains("Autorisé", na=False, case=False)]
     if not lignes_indiquant_le_retrait_du_produit.empty:

@@ -75,6 +75,31 @@ def mettre_a_jour():
     recherche = ['vigne', 'adjuvants']
     nouvelle_bdd=bdd_complete[bdd_complete['identifiant usage'].str.contains('|'.join(recherche), na=False, case=False)]
 
+    # NEW 2022
+    # si dans la colonne "(produit) seconds noms commerciaux" il y a des noms de produits ajouter des lignes à la BDD
+    # for each line of "(produit) seconds noms commerciaux"
+        # if is not empty
+            # for each NAME (separator = "|" )
+                # copy this line to BDD as new line, replacing "(produit) nom produit" by NAME
+    for ligne in range(len(nouvelle_bdd)):
+        new_line = nouvelle_bdd.iloc[ligne]
+        noms_produits = str(new_line['(produit) seconds noms commerciaux'])
+        if not noms_produits == "nan" :
+            nom_primaire = str(new_line['(produit) nom produit'])
+            liste_noms_produits = noms_produits.split(' | ')
+            for nom in liste_noms_produits :
+                #print(nom)
+                ligne_en_cours = new_line
+                ligne_en_cours['(produit) nom produit'] = nom
+                ligne_en_cours['(produit) seconds noms commerciaux'] = nom_primaire + " (nom primaire)"
+                nouvelle_bdd = nouvelle_bdd.append(ligne_en_cours, ignore_index=True)
+
+
+
+            #for noms in liste_noms_produits :
+            #    print(noms)
+            #nouvelle_bdd = nouvelle_bdd.append(new_row, ignore_index=True)
+
     # Remplace l'ancienne BDD
     chemin_enregistrement = str(chemin_actuel)+str("/bdd_phyto.csv")
     # Changer les en-tête ?
