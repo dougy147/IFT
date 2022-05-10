@@ -158,6 +158,15 @@ def a_propos():
 def tkquit():
     fenetre.destroy()
 
+def change_theme():
+    # NOTE: The theme's real name is azure-<mode>
+    if fenetre.tk.call("ttk::style", "theme", "use") == "azure-dark":
+        # Set light theme
+        fenetre.tk.call("set_theme", "light")
+    else:
+        # Set dark theme
+        fenetre.tk.call("set_theme", "dark")
+
 # Regrouper les 4 fonctions suivantes en une seule TODO
 def changer_virgule_en_point_surface_traitee():
     text = surface_traitee.get()
@@ -866,7 +875,7 @@ if dictionnaire_parcelles:
     surface_traitee.delete(0,END)
     surface_traitee.insert(0,dictionnaire_parcelles[parcelle_choisie.get()])
 else:
-    combobox_parcelles['values'] = ["Aucune parcelle enregistrée. Allez dans l'onglet 'Parcelles'"] # TODO
+    combobox_parcelles['values'] = ["Aucune parcelle enregistrée."] # TODO
     combobox_parcelles.current(0)
     surface_traitee.delete(0,END)
 
@@ -881,6 +890,7 @@ else :
     parcelle_selectionnee_scale.set(1)
 
 s1 = Scale(frame_surface_traitee, variable=parcelle_selectionnee_scale, resolution=0, from_ = 0.00, to = parcelle_selectionnee_scale.get(), orient = HORIZONTAL, command = lambda event : changer_surface_traitee(), showvalue=0)
+#s1 = ttk.Scale(frame_surface_traitee, style='Tick.TScale', variable=parcelle_selectionnee_scale, from_ = 0.00, to = parcelle_selectionnee_scale.get(), orient = HORIZONTAL, command = lambda event : changer_surface_traitee())
 s1.grid(row=0,column=0)
 
 
@@ -936,7 +946,8 @@ label_vide.grid(row=18,column=1)
 
 # AJOUTER ENREGISTREMENT avec le boutons sauvegarde de papa
 # Création du bouton de Sauvegarde
-sauvegarde = tkinter.Button (onglet1, text = "Enregistrer le traitement" , command = sauvegarde)
+#sauvegarde = tkinter.style='Accent.TButton', Button (onglet1, text = "Enregistrer le traitement" , command = sauvegarde)
+sauvegarde = ttk.Button (onglet1, text = "Enregistrer le traitement" , style='Accent.TButton', command = sauvegarde) # Theme Azure
 sauvegarde.grid(row=19,column=1)
 #quitter = tkinter.Button(onglet1, text="Quitter", command=tkquit)
 #quitter.grid(row=13,column=2)
@@ -1002,7 +1013,8 @@ entrer_superficie_confusion = Entry(onglet2, width=50,textvariable=superficie_co
 entrer_superficie_confusion.bind('<KeyRelease-comma>', lambda event : changer_virgule_en_point_entrer_superficie_confusion())
 entrer_superficie_confusion.grid(row=5,column=1)
 
-ajouter = tkinter.Button(onglet2, text = "Ajouter cette parcelle" , command = lambda : ajouter_parcelle())
+#ajouter = tkinter.Button(onglet2, text = "Ajouter cette parcelle" , command = lambda : ajouter_parcelle())
+ajouter = ttk.Button(onglet2, style='Accent.TButton', text = "Ajouter cette parcelle" , command = lambda : ajouter_parcelle())
 ajouter.grid(row=6,column=1)
 
 
@@ -1032,7 +1044,8 @@ else:
     liste_parcelles_de_la_base.current(0)
 liste_parcelles_de_la_base.grid(row=10,column=1)
 
-supprimer = tkinter.Button (onglet2, text = "Supprimer" , command = lambda : supprimer_parcelle())
+#supprimer = tkinter.Button (onglet2, text = "Supprimer" , command = lambda : supprimer_parcelle())
+supprimer = ttk.Button (onglet2, text = "Supprimer" , style='Accent.TButton', command = lambda : supprimer_parcelle())
 supprimer.grid(row=11,column=1)
 
 
@@ -1092,11 +1105,18 @@ indiquer_une_periode.grid(row=3,column=0)
 
 
 frame_enregistrement = ttk.Frame(onglet4)
-ouvrir_recap_en_pdf = tkinter.Button(frame_enregistrement, text = "Ouvrir le récapitulatif" , command = lambda : ouvrir_pdf())
+#ouvrir_recap_en_pdf = tkinter.Button(frame_enregistrement, text = "Ouvrir le récapitulatif" , command = lambda : ouvrir_pdf())
+ouvrir_recap_en_pdf = ttk.Button(frame_enregistrement, style='Accent.TButton', text = "Ouvrir le récapitulatif" , command = lambda : ouvrir_pdf())
 ouvrir_recap_en_pdf.grid(row=0,column=0)
 
-enregistrer_recap_en_pdf = tkinter.Button(frame_enregistrement, text = "Enregistrer le récapitulatif" , command = lambda : enregistrer_pdf())
-enregistrer_recap_en_pdf.grid(row=1,column=0)
+# JUMP LINE
+label_vide = tkinter.Label(frame_enregistrement, text="")
+label_vide.grid(row=1,column=0)
+####
+
+#enregistrer_recap_en_pdf = tkinter.Button(frame_enregistrement, text = "Enregistrer le récapitulatif" , command = lambda : enregistrer_pdf())
+enregistrer_recap_en_pdf = ttk.Button(frame_enregistrement, style='Accent.TButton', text = "Enregistrer le récapitulatif" , command = lambda : enregistrer_pdf())
+enregistrer_recap_en_pdf.grid(row=2,column=0)
 
 #indiquer_date_debut = DateEntry(onglet4, values="Text", year=2021, date_pattern="dd/mm/yyyy", locale="fr_FR")
 #indiquer_date_debut.grid(row=1, column=1, padx=20, pady=5, sticky=W)
@@ -1105,17 +1125,20 @@ enregistrer_recap_en_pdf.grid(row=1,column=0)
 
 # JUMP LINE
 label_vide = tkinter.Label(frame_enregistrement, text="")
-label_vide.grid(row=2,column=0)
+label_vide.grid(row=3,column=0)
 ####
 
 # Cases à cocher pour enregistrement :
 frame_checkbuttons = ttk.Frame(frame_enregistrement, borderwidth=5, relief="solid")
 label_infos_a_inclure = tkinter.Label(frame_checkbuttons, text="Informations à inclure dans le récapitulatif :")
 label_infos_a_inclure.grid(row=0,column=0)
-Checkbutton(frame_checkbuttons , text="résumé IFT", variable=resume_IFT).grid(row=1, column=0,sticky="w")
-Checkbutton(frame_checkbuttons , text="gestion des résistances", variable=resume_gestion_resistances).grid(row=2, column=0, sticky="w")
-Checkbutton(frame_checkbuttons , text="résumé des traitements", variable=resume_traitements).grid(row=3, column=0, sticky="w")
-frame_checkbuttons.grid(row=3,column=0)
+#Checkbutton(frame_checkbuttons , text="résumé IFT", variable=resume_IFT).grid(row=1, column=0,sticky="w")
+#Checkbutton(frame_checkbuttons , text="gestion des résistances", variable=resume_gestion_resistances).grid(row=2, column=0, sticky="w")
+#Checkbutton(frame_checkbuttons , text="résumé des traitements", variable=resume_traitements).grid(row=3, column=0, sticky="w")
+ttk.Checkbutton(frame_checkbuttons , style='Switch.TCheckbutton', text="résumé IFT", variable=resume_IFT).grid(row=1, column=0,sticky="w")
+ttk.Checkbutton(frame_checkbuttons , style='Switch.TCheckbutton', text="gestion des résistances", variable=resume_gestion_resistances).grid(row=2, column=0, sticky="w")
+ttk.Checkbutton(frame_checkbuttons , style='Switch.TCheckbutton', text="résumé des traitements", variable=resume_traitements).grid(row=3, column=0, sticky="w")
+frame_checkbuttons.grid(row=4,column=0)
 frame_enregistrement.grid(row=5,column=1)
 
 
@@ -1344,7 +1367,8 @@ tree.configure(xscroll=scrollbar_horizontale.set)
 scrollbar_horizontale.pack(fill='x')
 
 
-bouton_supprimer_traitement = tkinter.Button (onglet3, text = "Supprimer le traitement" , command = lambda : supprimer_le_traitement() )
+#bouton_supprimer_traitement = tkinter.Button (onglet3, text = "Supprimer le traitement" , command = lambda : supprimer_le_traitement() )
+bouton_supprimer_traitement = ttk.Button (onglet3, style='Accent.TButton', text = "Supprimer le traitement" , command = lambda : supprimer_le_traitement() )
 bouton_supprimer_traitement.pack()
 
 
@@ -1369,6 +1393,10 @@ edit.add_command(label="Ajouter/supprimer une parcelle", command = lambda : ongl
 # -------
 edit.add_separator()
 edit.add_command(label="Mettre la base des produits à jour", command = lambda : mettre_a_jour_bdd())
+# -------
+preferences = Menu(menubar, tearoff=0)
+menubar.add_cascade(label="Préférences", menu=preferences)
+preferences.add_command(label="Changer le thème", command = lambda : change_theme())
 
 menubar.add_cascade(label="Édition", menu=edit)
 help = Menu(menubar, tearoff=0)
