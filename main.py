@@ -325,6 +325,11 @@ def ajouter_parcelle():
     messagebox.showinfo("Information","La parcelle a bien été ajoutée.")
     infos_IFT_toute_la_base_de_donnees()
     recapitulatif_total()
+    # AJOUT 2022 (mettre a jour les Scale)
+    try :
+        update_label_et_superficie()
+    except :
+        print("Impossible de mettre à jour la surface traitée dans l'onglet Traitements")
 
 def supprimer_parcelle():
     # Afficher un message d'avertissement
