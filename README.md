@@ -28,7 +28,7 @@ NOM_DU_PROGRAMME vous permet d'enregistrer au format PDF un suivi complet de vos
       ```
       section "install"
       	SetOutPath "$INSTDIR"
-	CreateShortcut "$DESKTOP\NOM_DU_PROGRAMME.lnk" "$INSTDIR\IFT.exe" "" "$INSTDIR\icone.ico"
+      	CreateShortcut "$DESKTOP\NOM_DU_PROGRAMME.lnk" "$INSTDIR\IFT.exe" "" "$INSTDIR\icone.ico"
       sectionEnd
       ```
     - Cela permettra de créer un raccourci sur le Bureau à la fin de l'installation
