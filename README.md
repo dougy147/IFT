@@ -35,7 +35,7 @@ NOM_DU_PROGRAMME vous permet d'enregistrer au format PDF un suivi complet de vos
     - Lancer `NSIS` et choisir `Installer based on .ZIP file`
     - `Open` le fichier .zip
     - Choisir `Interface` > `Modern`
-    - `Default Folder` > `$PROGRAMFILES\NOM_DU_PROGRAMME`
+    - `Default Folder` > `$DESKTOP\NOM_DU_PROGRAMME` (possible d'installer dans ProgramFiles, mais problèmes Administrateur pour écrire des fichiers #TODO)
     - `Output EXE File` > sur le bureau (endroit de sauvegarde de l'installateur)
     - Et enfin `Generate`
 
