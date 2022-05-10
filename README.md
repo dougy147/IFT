@@ -24,14 +24,13 @@ NOM_DU_PROGRAMME vous permet d'enregistrer au format PDF un suivi complet de vos
 2) Créer l'installateur :
     - Télécharger et installer NSIS (https://sourceforge.net/projects/nsis/)
     - Ouvrir le fichier `C:\Program Files\NSIS\Contrib\zip2exe\Modern.nsh`
-    - Y ajoutez les lignes suivantes :
+    - Y ajoutez les lignes suivantes (cela permettra de créer un raccourci sur le bureau durant l'installation) :
       ```
       section "install"
       	SetOutPath "$INSTDIR"
       	CreateShortcut "$DESKTOP\NOM_DU_PROGRAMME.lnk" "$INSTDIR\IFT.exe" "" "$INSTDIR\icone.ico"
       sectionEnd
       ```
-    - Cela permettra de créer un raccourci sur le Bureau à la fin de l'installation
     - Placer l'ensemble du contenu de NOM_DU_PROGRAMME dans un fichier .zip
     - Lancer `NSIS` et choisir `Installer base on .ZIP file`
     - `Open` le fichier .zip
