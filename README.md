@@ -32,7 +32,7 @@ NOM_DU_PROGRAMME vous permet d'enregistrer au format PDF un suivi complet de vos
       sectionEnd
       ```
     - Placer l'ensemble du contenu de NOM_DU_PROGRAMME dans un fichier .zip
-    - Lancer `NSIS` et choisir `Installer base on .ZIP file`
+    - Lancer `NSIS` et choisir `Installer based on .ZIP file`
     - `Open` le fichier .zip
     - Choisir `Interface` > `Modern`
     - `Default Folder` > `$PROGRAMFILES\NOM_DU_PROGRAMME`
