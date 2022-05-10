@@ -1,8 +1,8 @@
-# NOM_DU_PROGRAMME
+# IFT
 
-NOM_DU_PROGRAMME est un programme de suivi de traitements phytosanitaires adapté à la viticulture.
+`IFT` (pour _*I*FT *F*acilite *T*out_)  est un programme de suivi de traitements phytosanitaires adapté à la viticulture.
 Il est notamment utile pour obtenir les scores d'IFT, qu'il est capable de calculer pour chaque parcelle ou sur l'ensemble de l'exploitation, et sur des périodes définies par l'utilisateur.
-NOM_DU_PROGRAMME vous permet d'enregistrer au format PDF un suivi complet de vos traitements (récapitulatif des traitements, scores d'IFT, gestion des résistances).
+`IFT` vous permet d'enregistrer au format PDF un suivi complet de vos traitements (récapitulatif des traitements, indicateurs de fréquence de traitement (IFT), gestion des résistances).
 
 
 ## Dépendances python
@@ -30,14 +30,14 @@ Manipulations à réaliser sous Windows.
       ```
       section "install"
       	SetOutPath "$INSTDIR"
-      	CreateShortcut "$DESKTOP\NOM_DU_PROGRAMME.lnk" "$INSTDIR\IFT.exe" "" "$INSTDIR\icone.ico"
+      	CreateShortcut "$DESKTOP\IFT.lnk" "$INSTDIR\IFT.exe" "" "$INSTDIR\icone.ico"
       sectionEnd
       ```
-    - Placer l'ensemble du contenu de NOM_DU_PROGRAMME dans un fichier .zip
+    - Placer l'ensemble du contenu de `IFT` dans un fichier .zip
     - Lancer `NSIS` et choisir `Installer based on .ZIP file`
     - `Open` le fichier .zip
     - Choisir `Interface` > `Modern`
-    - `Default Folder` > `$DESKTOP\NOM_DU_PROGRAMME` (possible d'installer dans ProgramFiles, mais problèmes Administrateur pour écrire des fichiers #TODO)
+    - `Default Folder` > `$DESKTOP\IFT` (possible d'installer dans ProgramFiles, mais problèmes Administrateur pour écrire des fichiers #TODO)
     - `Output EXE File` > sur le bureau (endroit de sauvegarde de l'installateur)
     - Et enfin `Generate`
 
@@ -53,7 +53,7 @@ Pour tenter de l'éviter, il faut suivre les instructions de ce site : https://p
 # Informations supplémentaires
 
 La base de données utilisée provient du site [https://www.data-gouv.fr](https://www.data.gouv.fr/fr/datasets/donnees-ouvertes-du-catalogue-e-phy-des-produits-phytopharmaceutiques-matieres-fertilisantes-et-supports-de-culture-adjuvants-produits-mixtes-et-melanges/) .
-Elle est certifiée par le gouvernement (qui utilise les données Ephy).
+Elle est certifiée par le gouvernement et est équivalente aux données [E-Phy](https://ephy.anses.fr).
 
-L'adresse stable pour télécharger les données (qui peuvent être mises à jour via NOM_DU_PROGRAMME) est :
+L'adresse stable pour télécharger les données (qui peuvent être mises à jour via `IFT`) est :
 https://www.data.gouv.fr/fr/datasets/r/98f7cac6-6b29-4859-8739-51b825196959
