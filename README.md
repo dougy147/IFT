@@ -17,9 +17,9 @@ NOM_DU_PROGRAMME vous permet d'enregistrer au format PDF un suivi complet de vos
     - Lancer `cmd` en mode Administrateur
     - Se placer dans le dossier qui contient `main.py` (ex : `cd C:\Users\dougy147\Desktop\IFT` )
     - Lancer la commande suivante : `pyinstaller main.py --onefile -w --splash splashscreen.png`
-    - Le fichier .exe se trouve dans le dossier 'dist'.
-    - Le placer dans le dossier principal
-    - On peut supprimer 'main.py', 'recherche_produit.py' et 'update.py'
+    - Le fichier `main.exe` se trouve dans le dossier `dist`.
+    - Le placer dans le dossier principal et le renommer en `IFT.exe` (modifiable)
+    - On peut supprimer `main.py`, `recherche_produit.py`, `update.py` et les dossiers `build` et `dist`
 
 2) Créer l'installateur :
     - Télécharger et installer NSIS (https://sourceforge.net/projects/nsis/)
