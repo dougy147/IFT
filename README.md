@@ -19,7 +19,7 @@ NOM_DU_PROGRAMME vous permet d'enregistrer au format PDF un suivi complet de vos
     - Lancer la commande suivante : `pyinstaller main.py --onefile -w --splash splashscreen.png`
     - Le fichier `main.exe` se trouve dans le dossier `dist`.
     - Le placer dans le dossier principal et le renommer en `IFT.exe` (modifiable)
-    - On peut supprimer `main.py`, `recherche_produit.py`, `update.py`, `main.spec` et les dossiers `build` et `dist`
+    - On peut supprimer `main.py`, `recherche_produit.py`, `update.py`, `main.spec` et les dossiers `build`, `dist` et `__pycache__`
 
 2) Créer l'installateur :
     - Télécharger et installer NSIS (https://sourceforge.net/projects/nsis/)
