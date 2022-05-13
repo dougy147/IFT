@@ -53,7 +53,7 @@ python main.py
 
 ### Depuis l'installateur
 
-Télécharger l'installateur depuis le [site officiel](https://iftconcept.fr) ou depuis le dossier `./installateur_windows/IFT.exe` de ce repôt GitHub.
+Télécharger l'installateur depuis le [site officiel](https://iftconcept.fr) ou depuis le dossier `./installateur_windows/IFT.exe` de ce dépôt GitHub.
 
 ### Créer soi-même l'exécutable (IFT.exe)
 
