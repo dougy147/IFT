@@ -50,7 +50,7 @@ Pour tenter de l'éviter, il faut suivre les instructions de ce site : https://p
 
 - Installer `python` et les dépendances requises avec `pip`:
 
-`pip install babel fpdf fpdf2 openpyxl pandas tkcalendar`
+`pip install requests babel fpdf fpdf2 openpyxl pandas tkcalendar`
 #TODO
 
 - Puis exécuter les commandes suivantes :
