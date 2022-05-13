@@ -49,7 +49,7 @@ python main.py
 
 Télécharger l'installateur depuis le [site officiel](https://iftconcept.fr) ou depuis le dossier `./installateur_windows/IFT.exe` de ce repôt GitHub.
 
-### Créer soi-même l'exécutable Windows
+### Créer soi-même l'exécutable (IFT.exe)
 
 - Cloner ce répertoire sur le Bureau
 - Décommenter les lignes `import pyi_splash` ; `pyi_splash.close()` et `fenetre.iconbitmap('icone.ico')` dans le script `main.py`
@@ -99,3 +99,7 @@ Cela est dû au fait que les pirates utilisent `pyinstaller` pour compiler des p
 Pour tenter d'éviter que `IFT Concept` ne soit reconnu comme une menace (le code reste open source...), il faut suivre les instructions de ce site : https://python.plainenglish.io/pyinstaller-exe-false-positive-trojan-virus-resolved-b33842bd3184
 
 #TODO
+
+# Thème utilisé
+
+Azure-ttk-theme : [https://github.com/rdbende/Azure-ttk-theme](https://github.com/rdbende/Azure-ttk-theme)
