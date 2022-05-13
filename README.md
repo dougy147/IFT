@@ -15,6 +15,10 @@ https://www.data.gouv.fr/fr/datasets/r/98f7cac6-6b29-4859-8739-51b825196959
 
 Les produits et doses réglementaires seront donc toujours à jour.
 
+⚠️ `IFT Concept` filtre automatiquement les produits `Retirés`. Cela peut représenter un problème pour enregistrer des traitements ayant eu lieu avant la date de retrait de ces produits. Une fonctionnalité sera bientôt ajoutée pour pouvoir les enregistrer.
+
+⚠️ `IFT Concept` est en cours d'écriture et peut comporter quelques bugs ou manquer de certaines fonctionnalités utiles. N'hésitez pas à nous en faire part.
+
 
 # Téléchargement
 
