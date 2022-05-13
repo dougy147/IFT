@@ -670,6 +670,7 @@ def enregistrer_en_pdf(ouvrir_ou_enregistrer,nom_parcelle,surface_exploitation,p
             dose_reg_trouvee = str(dose_reg_trouvee)+" "+str(unite_trouvee)
             surface_traitee_trouvee = traitements['surface_traitee'].iloc[ligne]
             surface_traitee_trouvee = str(surface_traitee_trouvee)+" ha"
+            #surface_traitee_trouvee = str(round(float(surface_traitee_trouvee),2))+" ha"
             IFT_trouve = traitements['IFT'].iloc[ligne]
             table_traitements.append([date_traitement_trouve , nom_produit_trouve , utilisation_trouvee, parcelle_trouvee , dose_app_trouvee , dose_reg_trouvee , surface_traitee_trouvee, IFT_trouve ])
             nombre_de_traitements = nombre_de_traitements + 1
@@ -691,6 +692,7 @@ def enregistrer_en_pdf(ouvrir_ou_enregistrer,nom_parcelle,surface_exploitation,p
             dose_reg_trouvee = str(dose_reg_trouvee)+" "+str(unite_trouvee)
             surface_traitee_trouvee = traitements['surface_traitee'].iloc[ligne]
             surface_traitee_trouvee = str(surface_traitee_trouvee)+" ha"
+            #surface_traitee_trouvee = str(round(float(surface_traitee_trouvee),2))+" ha"
             IFT_trouve = traitements['IFT'].iloc[ligne]
             table_traitements.append([date_traitement_trouve , nom_produit_trouve , utilisation_trouvee,  dose_app_trouvee , dose_reg_trouvee , surface_traitee_trouvee, IFT_trouve ])
             nombre_de_traitements = nombre_de_traitements + 1
@@ -743,6 +745,7 @@ def enregistrer_en_pdf(ouvrir_ou_enregistrer,nom_parcelle,surface_exploitation,p
 
             col_width = get_col_widths()
             self.set_font(size=title_size)
+            #self.set_font(size=12)
 
             if x_start == 'C':
                 table_width = 0
@@ -857,7 +860,8 @@ def enregistrer_en_pdf(ouvrir_ou_enregistrer,nom_parcelle,surface_exploitation,p
     pdf.set_font("Times", size = 13)
     if nom_parcelle == "Toute l'exploitation" :
         extension_fichier = "exploitation"
-        pdf.cell(200, 5, txt = "sur l'ensemble de l'exploitation ("+str(surface_exploitation)+" ha)", ln = 1, align = 'C')
+        #pdf.cell(200, 5, txt = "sur l'ensemble de l'exploitation ("+str(surface_exploitation)+" ha)", ln = 1, align = 'C')
+        pdf.cell(200, 5, txt = "sur l'ensemble de l'exploitation ("+str(round(float(surface_exploitation),2))+" ha)", ln = 1, align = 'C')
     else :
         extension_fichier = str(nom_parcelle)
         pdf.cell(200, 5, txt = "Parcelle : "+str(nom_parcelle), ln = 1, align = 'C')
@@ -915,7 +919,7 @@ def enregistrer_en_pdf(ouvrir_ou_enregistrer,nom_parcelle,surface_exploitation,p
     pdf.set_y(-20)
     date_du_jour=date.today()
     date_du_jour=date_du_jour.strftime("%d/%m/%Y")
-    pdf.cell(0, 0, txt = "Rapport généré par NOM_DU_LOGICIEL le "+str(date_du_jour),
+    pdf.cell(0, 0, txt = "Rapport généré par IFT Concept le "+str(date_du_jour),
              align = 'C')
 
     date_du_jour=date.today()

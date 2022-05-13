@@ -45,7 +45,7 @@ fenetre.tk.call("set_theme", "light")
 # https://github.com/rdbende/Azure-ttk-theme
 
 fenetre.geometry("750x600")                     # taille de fenêtre
-fenetre.title("IFT - v0.2 - Jean-Pierre & Luc Drouillet (2022)")                 # titre
+fenetre.title("IFT Concept - v0.3 (beta) - Jean-Pierre & Luc Drouillet")                 # titre
 fenetre.resizable(width=True, height=True)    # fenetre redimensionnable ?
 # fenetre.iconbitmap('icone.ico')
 
@@ -153,7 +153,7 @@ else :
 # Déclaration des fonctions :
 
 def a_propos():
-    messagebox.showinfo("À propos - Luc & Jean-Pierre Drouillet","NOM_DU_PROGRAMME est un programme de suivi de traitements, adapté à la viticulture. \n\nCe logiciel est écrit par Luc Drouillet et Jean-Pierre Drouillet. \n\nSi vous rencontrez des problèmes avec IFT, vous pouvez nous contacter par le biais de ce site internet : https://XXXXXXXXXX")
+    messagebox.showinfo("À propos - Luc & Jean-Pierre Drouillet","IFT Concept est un programme de suivi de traitements, adapté à la viticulture. \n\nCe logiciel est écrit par Luc Drouillet et Jean-Pierre Drouillet. \n\nSi vous rencontrez des problèmes avec IFT, vous pouvez nous contacter par le biais de ce site internet : https://iftconcept.fr")
 
 def tkquit():
     fenetre.destroy()
