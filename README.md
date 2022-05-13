@@ -5,6 +5,29 @@ Il est notamment utile pour obtenir les indicateurs de fréquence de traitement 
 `IFT Concept` vous permet d'enregistrer au format `.pdf` un suivi complet de vos traitements (récapitulatif des traitements sur la période et la parcelle choisies, indicateurs de fréquence de traitement, tableau de gestion des résistances).
 
 
+# Installation
+
+## Linux
+
+S'assurer d'avoir installer `python`
+
+### Depuis l'environnement virtuel
+
+```
+git clone https://github.com/dougy147/IFT
+cd ./IFT
+source ./env/bin/activate
+python main.py
+```
+
+### Directement avec `python` (en installant les dépendances)
+
+```
+git clone https://github.com/dougy147/IFT
+cd ./IFT
+pip install -r requirements.txt
+python main.py
+```
 
 ## Créer un installateur Windows
 
@@ -46,19 +69,6 @@ La compilation des scripts avec `pyinstaller` peut causer la détection de faux-
 Pour tenter de l'éviter, il faut suivre les instructions de ce site : https://python.plainenglish.io/pyinstaller-exe-false-positive-trojan-virus-resolved-b33842bd3184
 
 
-## Lancer `IFT Concept` sous Linux
-
-- Installer `python` et les dépendances requises avec `pip`:
-
-`pip install requests babel fpdf fpdf2 openpyxl pandas tkcalendar`
-#TODO
-
-- Puis exécuter les commandes suivantes :
-```
-git clone https://github.com/dougy147/IFT
-cd ./IFT
-python main.py
-```
 
 
 # Informations supplémentaires
