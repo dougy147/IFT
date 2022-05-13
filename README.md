@@ -100,6 +100,6 @@ Pour tenter d'éviter que `IFT Concept` ne soit reconnu comme une menace (le cod
 
 #TODO
 
-# Thème utilisé
+### Thème utilisé
 
 Azure-ttk-theme : [https://github.com/rdbende/Azure-ttk-theme](https://github.com/rdbende/Azure-ttk-theme)
