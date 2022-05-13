@@ -1,6 +1,6 @@
 # IFT Concept (version beta)
 
-`IFT Concept` est un programme **gratuit** de suivi de traitements phytosanitaires adapté à la viticulture.
+`IFT Concept` est un programme **gratuit** de suivi de traitements phytosanitaires adapté à la viticulture en Champagne.
 Il est notamment utile pour obtenir les indicateurs de fréquence de traitement (IFT), qu'il est capable de calculer pour chaque traitement, parcelle et/ou sur l'ensemble de l'exploitation, ainsi que sur des périodes choisies par l'utilisateur.
 `IFT Concept` vous permet d'enregistrer au format `.pdf` un suivi complet de vos traitements (récapitulatif des traitements sur la période et la parcelle choisies, indicateurs de fréquence de traitement, tableau de gestion des résistances).
 
