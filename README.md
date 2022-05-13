@@ -8,7 +8,6 @@ Il est notamment utile pour obtenir les indicateurs de fréquence de traitement 
 
 La base de données utilisée provient du site [https://www.data-gouv.fr](https://www.data.gouv.fr/fr/datasets/donnees-ouvertes-du-catalogue-e-phy-des-produits-phytopharmaceutiques-matieres-fertilisantes-et-supports-de-culture-adjuvants-produits-mixtes-et-melanges/) .
 Elle est certifiée par le gouvernement et est équivalente aux données [E-Phy](https://ephy.anses.fr).
-
 L'adresse stable pour télécharger les données (qui peuvent être mises à jour via `IFT Concept`) est :
 https://www.data.gouv.fr/fr/datasets/r/98f7cac6-6b29-4859-8739-51b825196959
 
