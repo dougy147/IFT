@@ -19,7 +19,7 @@ Les produits et doses réglementaires seront donc toujours à jour.
 La dernière version exécutable sera disponible à tout moment sur la page du site [IFTconcept.fr](https://iftconcept.fr).
 
 
-# Installation
+# Installation / Lancement
 
 ## Linux
 
@@ -51,15 +51,15 @@ Télécharger l'installateur depuis le [site officiel](https://iftconcept.fr) ou
 
 ### Créer soi-même l'exécutable Windows
 
-    - Cloner ce répertoire sur le Bureau
-    - Décommenter les lignes `import pyi_splash` ; `pyi_splash.close()` et `fenetre.iconbitmap('icone.ico')` dans le script `main.py`
-    - Lancer `cmd` en mode Administrateur
-    - Se placer dans le dossier qui contient `main.py` (ex : `cd C:\Users\dougy147\Desktop\IFT` )
-    - S'assurer d'avoir installer `pyinstaller` : ⚠ éviter `pip install pyinstaller`, et le compiler depuis la source (voir la raison plus bas)
-    - Lancer la commande : `pyinstaller main.py --onefile -w --splash splashscreen.png`
-    - Déplacer `main.exe` (situé dans le dossier `dist`) dans le dossier principal des scripts et le renommer en `IFT.exe` (selon convenance)
-    - Supprimer `main.py`, `recherche_produit.py`, `update.py`, `main.spec` et les dossiers `build`, `dist` et `__pycache__`
-    - Lancer `IFT.exe`
+- Cloner ce répertoire sur le Bureau
+- Décommenter les lignes `import pyi_splash` ; `pyi_splash.close()` et `fenetre.iconbitmap('icone.ico')` dans le script `main.py`
+- Lancer `cmd` en mode Administrateur
+- Se placer dans le dossier qui contient `main.py` (ex : `cd C:\Users\dougy147\Desktop\IFT` )
+- S'assurer d'avoir installer `pyinstaller` : ⚠ éviter `pip install pyinstaller`, et le compiler depuis la source (voir la raison plus bas)
+- Lancer la commande : `pyinstaller main.py --onefile -w --splash splashscreen.png`
+- Déplacer `main.exe` (situé dans le dossier `dist`) dans le dossier principal des scripts et le renommer en `IFT.exe` (selon convenance)
+- Supprimer `main.py`, `recherche_produit.py`, `update.py`, `main.spec` et les dossiers `build`, `dist` et `__pycache__`
+- Lancer `IFT.exe`
 
 ### Créer un installateur Windows
 
