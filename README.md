@@ -4,7 +4,7 @@
 Il est notamment utile pour obtenir les indicateurs de fréquence de traitement (IFT), qu'il est capable de calculer pour chaque traitement, parcelle et/ou sur l'ensemble de l'exploitation, ainsi que sur des périodes choisies par l'utilisateur.
 `IFT Concept` vous permet d'enregistrer au format `.pdf` un suivi complet de vos traitements (récapitulatif des traitements sur la période et la parcelle choisies, indicateurs de fréquence de traitement, tableau de gestion des résistances).
 
-![](IFTC1.png)
+![](iftconcept.gif)
 
 ## Informations supplémentaires
 
