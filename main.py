@@ -1,4 +1,4 @@
-﻿import tkinter # import de tkinter
+﻿import tkinter
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -38,15 +38,14 @@ import numpy
 
 fenetre = tkinter.Tk ()                         # création de la fenêtre principale
 
-# test theme
 style = ttk.Style(fenetre)
 fenetre.tk.call("source", "azure-theme/azure.tcl")
 fenetre.tk.call("set_theme", "light")
 # https://github.com/rdbende/Azure-ttk-theme
 
-fenetre.geometry("750x600")                     # taille de fenêtre
-fenetre.title("IFT Concept - v0.3 (beta) - Jean-Pierre & Luc Drouillet")                 # titre
-fenetre.resizable(width=True, height=True)    # fenetre redimensionnable ?
+fenetre.geometry("750x600")
+fenetre.title("IFT Concept - v0.3 (beta)")
+fenetre.resizable(width=True, height=True)
 # fenetre.iconbitmap('icone.ico')
 
 # Année en cours
