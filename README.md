@@ -8,9 +8,9 @@ Il est notamment utile pour obtenir les indicateurs de fréquence de traitement 
 
 ## Informations supplémentaires
 
-La base de données utilisée provient du site [https://www.data-gouv.fr](https://www.data.gouv.fr/fr/datasets/donnees-ouvertes-du-catalogue-e-phy-des-produits-phytopharmaceutiques-matieres-fertilisantes-et-supports-de-culture-adjuvants-produits-mixtes-et-melanges/) .
+La base de données utilisée provient de [data-gouv.fr](https://www.data.gouv.fr/fr/datasets/donnees-ouvertes-du-catalogue-e-phy-des-produits-phytopharmaceutiques-matieres-fertilisantes-et-supports-de-culture-adjuvants-produits-mixtes-et-melanges/).
 Elle est certifiée par le gouvernement et est équivalente aux données [E-Phy](https://ephy.anses.fr).
-L'adresse stable pour télécharger les données (qui peuvent être mises à jour via `IFT Concept`) est :
+L'adresse stable pour télécharger les données phytosanitaires (qui peuvent être mises à jour via `IFT Concept`) est :
 https://www.data.gouv.fr/fr/datasets/r/98f7cac6-6b29-4859-8739-51b825196959
 
 Les produits et doses réglementaires seront donc toujours à jour.
@@ -20,16 +20,57 @@ Les produits et doses réglementaires seront donc toujours à jour.
 ⚠️ `IFT Concept` est en cours d'écriture et peut comporter quelques bugs ou manquer de certaines fonctionnalités utiles. N'hésitez pas à nous en faire part.
 
 
-# Téléchargement
+# Installation
 
-La dernière version exécutable sera disponible à tout moment sur la page du site [IFTconcept.fr](https://iftconcept.fr).
+## Windows
+
+### Télécharger l'installateur
+
+La dernière version exécutable (Windows) est disponible à tout moment sur le [site officiel](https://iftconcept.fr) ou depuis le dossier `./installateur_windows/IFT.exe` de ce dépôt.
+
+### (Alternative) Compiler depuis la source
+
+- Cloner ce répertoire sur le Bureau
+- Décommenter les lignes `import pyi_splash` ; `pyi_splash.close()` et `fenetre.iconbitmap('icone.ico')` dans le script `main.py`
+- Lancer `cmd` en mode Administrateur
+- Se placer dans le dossier qui contient `main.py` (ex : `cd C:\Users\dougy147\Desktop\IFT` )
+- S'assurer d'avoir installer `pyinstaller` : ⚠ éviter `pip install pyinstaller`, et le compiler depuis la source (voir la raison plus bas)
+- Lancer la commande : `pyinstaller main.py --onefile -w --splash splashscreen.png`
+- Déplacer `main.exe` (situé dans le dossier `dist`) dans le dossier principal des scripts et le renommer en `IFT.exe` (selon convenance)
+- Supprimer `main.py`, `recherche_produit.py`, `update.py`, `main.spec` et les dossiers `build`, `dist` et `__pycache__`
+- Lancer `IFT.exe`
+
+Si vous souhaitez créer votre propre installateur, poursuivez avec les étapes ci-dessous :
+
+- Télécharger et installer NSIS (https://sourceforge.net/projects/nsis/)
+- Ouvrir le fichier `C:\Program Files\NSIS\Contrib\zip2exe\Modern.nsh`
+- Y ajoutez les lignes suivantes (cela permettra de créer un raccourci sur le bureau durant l'installation) :
+  ```
+  section "install"
+  	SetOutPath "$INSTDIR"
+  	CreateShortcut "$DESKTOP\IFT Concept.lnk" "$INSTDIR\IFT.exe" "" "$INSTDIR\icone.ico"
+  sectionEnd
+  ```
+- Placer l'ensemble du contenu du dossier `IFT` dans un fichier .zip
+- Lancer `NSIS` et choisir `Installer based on .ZIP file`
+- `Open` le fichier .zip
+- Choisir `Interface` > `Modern`
+- `Default Folder` > `$DESKTOP\IFT` (possible d'installer dans Program Files, mais problèmes Administrateur pour écrire des fichiers #TODO)
+- `Output EXE File` > sur le bureau (endroit de sauvegarde de l'installateur)
+- Et enfin `Generate`
 
 
-# Installation / Lancement
+#### Compiler `pyinstaller` depuis la source
+
+La compilation des scripts avec `pyinstaller` peut causer la détection de faux-positifs par les antivirus.
+Cela est dû au fait que les pirates utilisent `pyinstaller` pour compiler des programmes malveillants.
+Pour tenter d'éviter que `IFT Concept` ne soit reconnu comme une menace (le code reste open source...), il faut suivre les instructions de ce site : https://python.plainenglish.io/pyinstaller-exe-false-positive-trojan-virus-resolved-b33842bd3184
+
+#TODO
 
 ## Linux
 
-S'assurer d'avoir installer `python`
+S'assurer d'avoir installer `python` ou `python3`.
 
 ### Depuis l'environnement virtuel
 
@@ -49,63 +90,7 @@ pip install -r requirements.txt
 python main.py
 ```
 
-## Windows
 
-### Depuis l'installateur
-
-Télécharger l'installateur depuis le [site officiel](https://iftconcept.fr) ou depuis le dossier `./installateur_windows/IFT.exe` de ce dépôt GitHub.
-
-### Créer soi-même l'exécutable (IFT.exe)
-
-- Cloner ce répertoire sur le Bureau
-- Décommenter les lignes `import pyi_splash` ; `pyi_splash.close()` et `fenetre.iconbitmap('icone.ico')` dans le script `main.py`
-- Lancer `cmd` en mode Administrateur
-- Se placer dans le dossier qui contient `main.py` (ex : `cd C:\Users\dougy147\Desktop\IFT` )
-- S'assurer d'avoir installer `pyinstaller` : ⚠ éviter `pip install pyinstaller`, et le compiler depuis la source (voir la raison plus bas)
-- Lancer la commande : `pyinstaller main.py --onefile -w --splash splashscreen.png`
-- Déplacer `main.exe` (situé dans le dossier `dist`) dans le dossier principal des scripts et le renommer en `IFT.exe` (selon convenance)
-- Supprimer `main.py`, `recherche_produit.py`, `update.py`, `main.spec` et les dossiers `build`, `dist` et `__pycache__`
-- Lancer `IFT.exe`
-
-### Créer un installateur Windows
-
-1) Créer un exécutable :
-    - Cloner ce répertoire sur le Bureau
-    - Décommenter les lignes `import pyi_splash` ; `pyi_splash.close()` et `fenetre.iconbitmap('icone.ico')` dans le script `main.py`
-    - Lancer `cmd` en mode Administrateur
-    - Se placer dans le dossier qui contient `main.py` (ex : `cd C:\Users\dougy147\Desktop\IFT` )
-    - S'assurer d'avoir installer `pyinstaller` : ⚠ éviter `pip install pyinstaller`, et le compiler depuis la source (voir la raison plus bas)
-    - Lancer la commande : `pyinstaller main.py --onefile -w --splash splashscreen.png`
-    - Déplacer `main.exe` (situé dans le dossier `dist`) dans le dossier principal des scripts et le renommer en `IFT.exe` (modifiable)
-    - Supprimer `main.py`, `recherche_produit.py`, `update.py`, `main.spec` et les dossiers `build`, `dist` et `__pycache__`
-
-2) Créer l'installateur :
-    - Télécharger et installer NSIS (https://sourceforge.net/projects/nsis/)
-    - Ouvrir le fichier `C:\Program Files\NSIS\Contrib\zip2exe\Modern.nsh`
-    - Y ajoutez les lignes suivantes (cela permettra de créer un raccourci sur le bureau durant l'installation) :
-      ```
-      section "install"
-      	SetOutPath "$INSTDIR"
-      	CreateShortcut "$DESKTOP\IFT Concept.lnk" "$INSTDIR\IFT.exe" "" "$INSTDIR\icone.ico"
-      sectionEnd
-      ```
-    - Placer l'ensemble du contenu du dossier `IFT` dans un fichier .zip
-    - Lancer `NSIS` et choisir `Installer based on .ZIP file`
-    - `Open` le fichier .zip
-    - Choisir `Interface` > `Modern`
-    - `Default Folder` > `$DESKTOP\IFT` (possible d'installer dans Program Files, mais problèmes Administrateur pour écrire des fichiers #TODO)
-    - `Output EXE File` > sur le bureau (endroit de sauvegarde de l'installateur)
-    - Et enfin `Generate`
-
-
-### Compiler `pyinstaller` depuis la source
-
-La compilation des scripts avec `pyinstaller` peut causer la détection de faux-positifs par les antivirus.
-Cela est dû au fait que les pirates utilisent `pyinstaller` pour compiler des programmes malveillants.
-Pour tenter d'éviter que `IFT Concept` ne soit reconnu comme une menace (le code reste open source...), il faut suivre les instructions de ce site : https://python.plainenglish.io/pyinstaller-exe-false-positive-trojan-virus-resolved-b33842bd3184
-
-#TODO
-
-### Thème utilisé
+# Thème utilisé
 
 Azure-ttk-theme : [https://github.com/rdbende/Azure-ttk-theme](https://github.com/rdbende/Azure-ttk-theme)
