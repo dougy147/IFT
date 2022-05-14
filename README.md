@@ -12,7 +12,7 @@ Il est notamment utile pour obtenir les indicateurs de fréquence de traitement 
 
 La base de données utilisée par `IFT Concept` provient du site [data-gouv.fr](https://www.data.gouv.fr/fr/datasets/donnees-ouvertes-du-catalogue-e-phy-des-produits-phytopharmaceutiques-matieres-fertilisantes-et-supports-de-culture-adjuvants-produits-mixtes-et-melanges/).
 Elle est certifiée par le gouvernement et est équivalente aux données [E-Phy](https://ephy.anses.fr).
-`IFT Concept` s'appuie sur cette [adresse stable](https://www.data.gouv.fr/fr/datasets/r/98f7cac6-6b29-4859-8739-51b825196959) pour récupérer les nouvelles données phytosanitaires.
+`IFT Concept` s'appuie sur [cette adresse stable](https://www.data.gouv.fr/fr/datasets/r/98f7cac6-6b29-4859-8739-51b825196959) pour récupérer les nouvelles données phytosanitaires.
 Les produits et doses réglementaires seront donc toujours à jour (voir l'onglet `Édition > Mettre la base des produits à jour`).
 
 
