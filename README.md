@@ -10,12 +10,11 @@ Il est notamment utile pour obtenir les indicateurs de fréquence de traitement 
 
 ## Informations supplémentaires
 
-La base de données utilisée provient de [data-gouv.fr](https://www.data.gouv.fr/fr/datasets/donnees-ouvertes-du-catalogue-e-phy-des-produits-phytopharmaceutiques-matieres-fertilisantes-et-supports-de-culture-adjuvants-produits-mixtes-et-melanges/).
+La base de données utilisée par `IFT Concept` provient du site [data-gouv.fr](https://www.data.gouv.fr/fr/datasets/donnees-ouvertes-du-catalogue-e-phy-des-produits-phytopharmaceutiques-matieres-fertilisantes-et-supports-de-culture-adjuvants-produits-mixtes-et-melanges/).
 Elle est certifiée par le gouvernement et est équivalente aux données [E-Phy](https://ephy.anses.fr).
-L'adresse stable pour télécharger les données phytosanitaires (qui peuvent être mises à jour via `IFT Concept`) est :
-https://www.data.gouv.fr/fr/datasets/r/98f7cac6-6b29-4859-8739-51b825196959
+`IFT Concept` s'appuie sur cette [adresse stable](https://www.data.gouv.fr/fr/datasets/r/98f7cac6-6b29-4859-8739-51b825196959) pour récupérer les nouvelles données phytosanitaires.
+Les produits et doses réglementaires seront donc toujours à jour (voir l'onglet `Édition > Mettre la base des produits à jour`).
 
-Les produits et doses réglementaires seront donc toujours à jour.
 
 ⚠️ `IFT Concept` filtre automatiquement les produits `Retirés`. Cela peut représenter un problème pour enregistrer des traitements ayant eu lieu avant la date de retrait de ces produits. Une fonctionnalité sera bientôt ajoutée pour pouvoir les enregistrer.
 
