@@ -1,4 +1,4 @@
-# <img src="icone.ico" width='40px'> IFT Concept (version beta)
+# <img src="icone.ico" width='40px'> IFT Concept (version 0.3.0-beta)
 
 <p align="justify">
 <code>IFT Concept</code> est un logiciel <b>gratuit</b> de suivi de traitements phytosanitaires adapté à la viticulture en Champagne.
