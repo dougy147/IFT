@@ -8,8 +8,6 @@ Il est notamment utile pour obtenir les indicateurs de fréquence de traitement 
 
 ## Informations supplémentaires
 
-			<a class="github-button" href="https://github.com/dougy147/IFT/raw/main/installateur_windows/IFT.exe" data-icon="octicon-download" data-size="large" aria-label="Télécharger IFT Concept">Télécharger IFT Concept - v0.2.0-beta - Windows</a>
-
 La base de données utilisée provient du site [https://www.data-gouv.fr](https://www.data.gouv.fr/fr/datasets/donnees-ouvertes-du-catalogue-e-phy-des-produits-phytopharmaceutiques-matieres-fertilisantes-et-supports-de-culture-adjuvants-produits-mixtes-et-melanges/) .
 Elle est certifiée par le gouvernement et est équivalente aux données [E-Phy](https://ephy.anses.fr).
 L'adresse stable pour télécharger les données (qui peuvent être mises à jour via `IFT Concept`) est :
