@@ -18,7 +18,7 @@ Les produits et doses réglementaires seront donc toujours à jour (voir l'ongle
 
 ⚠️ `IFT Concept` filtre automatiquement les produits `Retirés`. Cela peut représenter un problème pour enregistrer des traitements ayant eu lieu avant la date de retrait de ces produits. Une fonctionnalité sera bientôt ajoutée pour pouvoir les enregistrer.
 
-⚠️ `IFT Concept` est en cours d'écriture et peut comporter quelques bugs ou manquer de certaines fonctionnalités utiles. N'hésitez pas à nous en faire part.
+⚠️ `IFT Concept` est en cours d'écriture et peut comporter quelques bugs ou manquer de certaines fonctionnalités utiles. N'hésitez pas à nous en faire part [ici](https://iftconcept.fr/contact.php).
 
 
 # Installation
