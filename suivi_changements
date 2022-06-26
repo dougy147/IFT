@@ -1,0 +1,99 @@
+INFOS
+
+La base de données utilisée provient du site "data-gouv" et est certifiée par le gouvernement (utilise les données Ephy)
+https://www.data.gouv.fr/fr/datasets/donnees-ouvertes-du-catalogue-e-phy-des-produits-phytopharmaceutiques-matieres-fertilisantes-et-supports-de-culture-adjuvants-produits-mixtes-et-melanges/
+L'adresse stable pour télécharger les données (qui peuvent être mises à jour) est :
+https://www.data.gouv.fr/fr/datasets/r/98f7cac6-6b29-4859-8739-51b825196959
+
+
+
+- v29 (2022) :
+--> ajout des noms de produits secondaires dans les entrées
+
+- v27 :
+--> ajouter un menu
+
+- v25 :
+--> correction de la suppression des traitements lorsqu'une parcelle est supprimée OK
+--> donner le compte des traitements : OK
+TODO :
+--> réfléchir à comment faire pour les "passages restants" : ne mettre d'avertissement que si la période est inférieure à 1 an par rapport à la date du jour ?
+--> permettre de supprimer plusieurs traitements d'un coup (serait bien de pouvoir les modifier directement mais compliqué pour pas grand-chose)
+
+
+
+-v24 :
+--> pour certains produits la dose réglementaire est inexistante (problème dans la bdd officielle, mais à intégrer)
+
+
+- v23 :
+--> possiblité de choisir des périodes : OK
+--> possibilité de choisir d'intégrer dans le PDF : OK
+	- le récapitulatif IFT
+	- la gestion des résistances
+	- la liste des traitements
+--> faire un onglet 'Traitements' pour pouvoir supprimer un traitement si erreur : OK
+
+- TODO :
+--> pour certains produits la dose réglementaire est inexistante (problème dans la bdd officielle, mais à intégrer)
+
+
+
+------------------------------------------------------
+# ANCIENNES VERSIONS :
+
+V7 : module de mise à jour
+V8 : pas de doublons dans la liste de produits trouvés
+
+v9 :
+- correction calcul sur ensemble parcelles (normalement l'IFT total est bon : vérifier sur le site ephy)
+- ajout de biocontrole et d'informations supplémentaire quand le traitement est enregistré
+- la taille de la parcelle et la dose maximale du produit sont directement entrées, mais restent modifiables
+
+v10 :
+- faire le calcul du récapitulatif (comme CIVC)
+
+v11:
+- ajouté récapitulatif
+
+v12 :
+- correction des IFT classique et biocontrôle :
+	- dans le récapitulatif : mêmes résultats que dans le fichier excel du CIVC
+	- dans "parcelle" l'IFT de la parcelle n'est que l'IFT classique (ajouter l'IFT biocontrôle + total parcelle ?)
+- ajouter choix "pré-levée" ou "post-levée" si produit = herbicide
+- j'ai retiré les "Traitements généraux" (mais possible de les remettre facilement)
+
+v13 :
+- détail : permettre de mettre des virgules à la place des points (vérifier que ça se remette en point à l'enregistrement)
+- regarder si possible de choisir une période
+- donner un récapitulatif en PDF ("obtenir un récapitulatif", permettre de cocher "toute l'exploitation", "parcelle")
+
+v13_windows
+
+v14 :
+- voir si calendrier peut être mis en français -> OK
+- donner un récapitulatif en PDF ("obtenir un récapitulatif", permettre de cocher "toute l'exploitation", "parcelle") -> en cours
+- détail : permettre de mettre des virgules à la place des points (vérifier que ça se remette en point à l'enregistrement)
+- regarder si possible de choisir une période
+
+v15 :
+- ajout "gestion résistances" (reformater l'affichage)
+- détail : permettre de mettre des virgules à la place des points (vérifier que ça se remette en point à l'enregistrement)
+- regarder si possible de choisir une période
+
+v17 :
+- ajout période à choisir > vérifier si correct
+
+v18 :
+- changer virgule en point dans les Entry
+- période OK
+
+v19 :
+- vérifier que tous les calculs sont bons
+- détail : cases à cocher pour choisir si enregistrer "par parcelle + exploitation totale" + listing des traitements
+
+
+v22 :
+- retirer l'affichage de "gestion des resistances" dans récapitulatif : OK
+- ajouter des cases à cocher pour l'enregistrement : OK (mais améliorer l'affichage sur le PDF)
+- ajouter un onglet 'traitements' pour pouvoir supprimer des traitements

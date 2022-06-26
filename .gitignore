@@ -1,0 +1,7 @@
+.git
+__pycache__
+build
+dist
+main.spec
+linux
+test
