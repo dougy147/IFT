@@ -12,7 +12,7 @@ Il est notamment utile pour obtenir les indicateurs de fréquence de traitement 
 
 ## Général
 
-ℹ️ `IFT Concept` est en cours d'écriture et peut comporter quelques bugs ou manquer de certaines fonctionnalités utiles. N'hésitez pas à nous en faire part [ici](https://iftconcept.fr/contact.php).
+ℹ️ `IFT Concept` est en cours d'écriture et peut comporter quelques bugs ou manquer de certaines fonctionnalités utiles. N'hésitez pas à nous en faire part [ici](https://github.com/dougy147/IFT/issues) ou par mail en visitant cette adresse : [https://iftconcept.fr](https://iftconcept.fr/#sec-ind-3).
 
 ## Base de données des produits
 
