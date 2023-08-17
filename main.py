@@ -757,9 +757,9 @@ combobox_herbicide = ttk.Combobox(frame_utilisation_herbicide, values=list(['pos
 #bouton_calcul_IFT = tkinter.Button (text = "Valider" , command = calcul_IFT)                                # Bouton : Calculer l'IFT
 # Zone de texte (labels)
 parcelle_totale = tkinter.Label(onglet1, text="hectare(s)")
-zone_texte_nom_produit_a_chercher = tkinter.Label (onglet1 ,text = "Nom du produit cherché :")
-zone_texte_entrer_produit_cherche = tkinter.Label (onglet1 ,text = "Sélectionnez le produit :")
-zone_texte_selectionner_dose = tkinter.Label (onglet1 ,text = "Sélectionnez l'utilisation :")
+zone_texte_nom_produit_a_chercher = tkinter.Label (onglet1 ,text = "Recherche :")
+zone_texte_entrer_produit_cherche = tkinter.Label (onglet1 ,text = "Produit :")
+zone_texte_selectionner_dose = tkinter.Label (onglet1 ,text = "Utilisation :")
 frame_IFT_traitement = ttk.Frame(onglet1, borderwidth=5, relief="solid")
 zone_texte_IFT = tkinter.Label (frame_IFT_traitement ,text = "IFT du traitement :")
 zone_texte_IFT_calcule = tkinter.Label (frame_IFT_traitement ,textvariable = IFT)
@@ -796,8 +796,8 @@ label_vide.grid(row=0,column=1)
 ####
     # Ajouter une parcelle
 
-label_ajouter_un_traitement = tkinter.Label(onglet1, text="Ajouter un traitement", font="Times, 18")
-label_ajouter_un_traitement.grid(row=1,column=1)
+#label_ajouter_un_traitement = tkinter.Label(onglet1, text="Ajouter un traitement", font="Times, 18")
+#label_ajouter_un_traitement.grid(row=1,column=1)
 
 
 # Zone de recherche du produit
@@ -814,18 +814,18 @@ label_vide.grid(row=3,column=1)
 ####
 
 # Liste des produits trouvés
-zone_texte_entrer_produit_cherche.grid(row = 4, column=0)
+zone_texte_entrer_produit_cherche.grid(row = 3, column=0)
 combobox_liste_produits.bind('<<ComboboxSelected>>', lambda event: rechercher_meme_dose() & rechercher_doses_unite())
 combobox_liste_produits['values'] = liste
-combobox_liste_produits.grid(row=4,column=1)
+combobox_liste_produits.grid(row=3,column=1)
     # Bouton "Valider"
 #bouton_valider_produit_trouve.grid(row=1,column=2)
 
 # Sélectionner l'utilisation souhaitée (plusieurs possibles, mais toujours "autorisées")
-zone_texte_selectionner_dose.grid(row = 5, column=0)
+zone_texte_selectionner_dose.grid(row = 4, column=0)
 combobox_utilisations.bind('<<ComboboxSelected>>', lambda event: rechercher_doses_unite())
 combobox_utilisations.grid(row=0,column=0)
-frame_utilisation_herbicide.grid(row=5,column=1)
+frame_utilisation_herbicide.grid(row=4,column=1)
 
 # JUMP LINE
 label_vide = tkinter.Label(onglet1, text="")
