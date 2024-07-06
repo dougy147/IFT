@@ -1,5 +1,5 @@
 Babel==2.10.1
-certifi==2023.7.22
+certifi==2024.7.4
 charset-normalizer==2.0.12
 defusedxml==0.7.1
 et-xmlfile==1.1.0
